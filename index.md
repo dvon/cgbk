@@ -6,7 +6,7 @@ layout: default
 
 Section text...and here's some code:
 
-```
+```python3
 def main():
     print("Hello, World!")
 ```
