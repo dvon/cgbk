@@ -1,6 +1,5 @@
 markdown: redcarpet
 redcarpet:
-  extensions:
-    footnotes
+  extensions: ["fenced_code_blocks"]
 
 highlighter: pygments
