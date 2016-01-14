@@ -1,18 +1,18 @@
-@charset "UTF-8";
-
 body {
-  background-color: rgb(235, 235, 230);
-  max-width: 720px;
+  font-family: "Merriweather";
+  font-size: 95%;
+  line-height: 150%;
+  background-color: rgb(250, 245, 220);
+  margin: 0px;
+}
+
+.content {
+  max-width: 800px;
   margin: auto;
-  padding: 10px 25px;
 }
 
-h1 {
+.content {
   margin-top: 50px;
-}
-
-h2, h3 {
-  margin-top: 35px;
 }
 
 pre, code {
@@ -41,3 +41,4 @@ pre code {
   padding: 0px;
   margin: 0px;
 }
+
