@@ -31,14 +31,14 @@ code {
   padding: 0px 3px;
   margin: -1px;
 }
-
+/*
 pre code {
   background-color: transparent;
   border: none;
   padding: 0px;
   margin: 0px;
 }
-
+*/
 a:link {
   color: #349;  /* Match trac keyword. */
 }
