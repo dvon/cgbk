@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+body {
+  background-color: rgb(235, 235, 230);
+  max-width: 720px;
+  margin: auto;
+  padding: 10px 25px;
+}
+
+h1 {
+  margin-top: 50px;
+}
+
+h2, h3 {
+  margin-top: 35px;
+}
+
+pre, code {
+  line-height: normal;
+  background-color: white;
+  border: 1px solid rgb(220, 220, 215);
+  border-radius: 5px;
+}
+
+pre {
+  padding: 5px;
+  padding-left: 10px;
+}
+
+code {
+  padding: 0px 3px;
+  margin: -1px;
+}
+
+a:link {
+  color: #349;  /* Match trac keyword. */
+}
+
+a:visited {
+  color: #647;
+}
