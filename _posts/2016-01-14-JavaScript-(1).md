@@ -98,7 +98,7 @@ while (player.score < 100) {
 console.log(player.score + " points in " + turnCount + " turns.");
 ~~~
 
-1.  *Enter the code above, saved in "pig.html" and "pig.js," in
+{% increment n %}.  *Enter the code above, saved in "pig.html" and "pig.js," in
 the same folder.  Open "pig.html" in a web browser.  In Chrome,
 you will be able to see the output if you choose
 "More Tools...Developer Tools...Console,"
@@ -185,7 +185,7 @@ updates the second player's `player` object's `score` field
 rather than that of the first player, so the second player
 gets whatever points should have been given to the first.
 
-2.  *Write a modified version of the code above, with `var`
+{% increment n %}.  *Write a modified version of the code above, with `var`
 taken out and additional `console.log` statements added, to
 clearly show the error explained in the previous paragraph.*
 
