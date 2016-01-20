@@ -51,5 +51,5 @@ body {
 
 .exercise_label::after {
   counter-increment: exercise_counter;
-  content: " " counter(exercise_counter);
+  content: " " counter(exercise_counter) ".";
 }
