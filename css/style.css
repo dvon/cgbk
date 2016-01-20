@@ -45,3 +45,11 @@ pre code {
   margin: 0px;
 }
 
+body {
+  counter-reset: exercise_counter;
+}
+
+.exercise_label::after {
+  counter-increment: exercise_counter;
+  content: " " counter(exercise_counter) ".";
+}
