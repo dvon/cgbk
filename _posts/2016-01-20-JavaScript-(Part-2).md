@@ -118,51 +118,45 @@ variables and functions that act like private or public members
 of an object, and also static vs. instance members.
 
 @.  *Write a function (or more than one) to read multiple files
-    concurrently.  It should create `XMLHttpRequest` objects and
-    call `send` for all the files, not waiting for one to finish
-    loading before sending the request for another.  In addition,
-    it should be able to determine when all of the files are loaded,
-    and should at that point call a callback function passed in as
-    an argument.*^[In case you are worried about the possibility of
-    a race condition, if for example you had multiple callback
-    functions trying to modify a shared variable at the same
-    time...you don't need to worry about that.  In JavaScript a
-    function runs as an *atomic* piece of code, i.e., its
-    execution won't be interleaved with that of another function.
-    For more details:
-    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop>]
-    *Here's how it might look to call your function.*
+concurrently.  It should create `XMLHttpRequest` objects and
+call `send` for all the files, not waiting for one to finish
+loading before sending the request for another.  In addition,
+it should be able to determine when all of the files are loaded,
+and should at that point call a callback function passed in as
+an argument.*[^1]
 
-    ~~~javascript
-    printResponses = function (responses) {
-        var i;
+*Here's how it might look to call your function.*
 
-        for (i = 0; i < responses.length(); i++) {
-            console.log(responses[i]);
-        }
-    };
+~~~javascript
+printResponses = function (responses) {
+    var i;
 
-    fileNames = ["hello.txt", "salut.txt", "hola.txt"];
-    readFiles(fileNames, printResponses);
-    ~~~
-
-    *Hint:  You can use an immediate function any time you need to
-    limit the scope of a variable.  My solution for this exercise
-    uses an immediate function within a loop, an idea illustrated
-    by the example below.*
-
-    ~~~javascript
-    j = 1;
-
-    for (i = 0; i < 5; i++) {
-        (function () {
-            var j = 2;
-            console.log(j);  // prints "2" (5 times)
-        }());
+    for (i = 0; i < responses.length(); i++) {
+        console.log(responses[i]);
     }
+};
 
-    console.log(j);  // prints "1"
-    ~~~
+fileNames = ["hello.txt", "salut.txt", "hola.txt"];
+readFiles(fileNames, printResponses);
+~~~
+
+*Hint:  You can use an immediate function any time you need to
+limit the scope of a variable.  My solution for this exercise
+uses an immediate function within a loop, an idea illustrated
+by the example below.*
+
+~~~javascript
+j = 1;
+
+for (i = 0; i < 5; i++) {
+    (function () {
+        var j = 2;
+        console.log(j);  // prints "2" (5 times)
+    }());
+}
+
+console.log(j);  // prints "1"
+~~~
 
 ### Public, Private, Static
 
@@ -401,14 +395,7 @@ access any instance members?
 One more possibility would be to include public static members.
 In Java, these would be accessed via the class name (i.e.,
 `Math.random`).  It's possible to do the same thing in JavaScript,
-as illustrated by the example below.^[A different way to simulate
-public static members
-would be to use the `prototype` member automatically created for
-function objects and assigned to `this` when the function is
-invoked as a constructor (i.e., with `new`).  I've chosen not to
-do it this way, and to avoid a general discussion of how
-`prototype` works in Javascript, in order to keep this lesson
-from getting too long.]  (To avoid repetition I left
+as illustrated by the example below.[^2]  (To avoid repetition I left
 out parts of the code in the last few examples, but I've included
 the whole thing here since this is the last version of the code.)
 
@@ -495,78 +482,82 @@ declared in such a way that its scope contains all
 instances.
 
 @.  *Why is it that `setNumDice` isn't defined at the beginning
-    with private static members?  Or what if `setNumDice` were
-    defined inside `PigPlayer`?  What difference would that make?*
+with private static members?  Or what if `setNumDice` were
+defined inside `PigPlayer`?  What difference would that make?*
 
 @.  *Translate the following Java class into a JavaScript function,
-    following the pattern of the final version of `PigPlayer`
-    above:  use `ps` for any private static members, `pb` for
-    any public instance members, and `pv` for any private instance
-    members; add any public static members to the constructor object
-    (e.g., `PigPlayer`) after adding the constructor function.
-    (You may assume `SpriteDrawer` is defined somewhere else, i.e,
-    add it to your JSLint `/*global` line at the beginning of the
-    file.)*
+following the pattern of the final version of `PigPlayer`
+above:  use `ps` for any private static members, `pb` for
+any public instance members, and `pv` for any private instance
+members; add any public static members to the constructor object
+(e.g., `PigPlayer`) after adding the constructor function.
+(You may assume `SpriteDrawer` is defined somewhere else, i.e,
+add it to your JSLint `/\*global` line at the beginning of the
+file.)*
 
-    ~~~java
-    public class Sprite {
+~~~java
+public class Sprite {
 
-        private static int minX, minY, maxX, maxY;
+    private static int minX, minY, maxX, maxY;
 
-        static {
-            minX = minY = 0;
-            maxX = 640;
-            maxY = 480;
-        }
-
-        private String filename;
-        private double xPos = 0, yPos = 0;
-        private boolean movable;
-        private boolean visible = true;
-
-        public Sprite(String filename, double xPos, double yPos,
-                boolean movable) {
-            this.filename = filename;
-            forceMove(xPos, yPos);
-            this.movable = movable;
-        }
-
-        private void forceMove(double dx, double dy) {
-            xPos += dx;
-            yPos += dy;
-
-            if (xPos < minX) xPos = minX;
-            if (xPos > maxX) xPos = maxX;
-
-            if (yPos < minY) yPos = minY;
-            if (yPos > maxY) yPos = maxY;
-        }
-
-        public void move(double dx, double dy) {
-            if (movable) forceMove(dx, dy);
-        }
-
-        public void hide() {
-            visible = false;
-        }
-
-        public void show() {
-            visible = true;
-        }
-
-        public void draw() {
-
-            if (visible)
-                SpriteDrawer.draw(filename, xPos, yPos);
-        }
-
-        public boolean checkCollision(Sprite that,
-                double collisionDistance) {
-            double dx = this.xPos - that.xPos;
-            double dy = this.yPos - that.yPos;
-            double distance = Math.sqrt(dx * dx + dy * dy);
-
-            return distance <= collisionDistance;
-        }
+    static {
+        minX = minY = 0;
+        maxX = 640;
+        maxY = 480;
     }
-    ~~~
+
+    private String filename;
+    private double xPos = 0, yPos = 0;
+    private boolean movable;
+    private boolean visible = true;
+
+    public Sprite(String filename, double xPos, double yPos,
+            boolean movable) {
+        this.filename = filename;
+        forceMove(xPos, yPos);
+        this.movable = movable;
+    }
+
+    private void forceMove(double dx, double dy) {
+        xPos += dx;
+        yPos += dy;
+
+        if (xPos < minX) xPos = minX;
+        if (xPos > maxX) xPos = maxX;
+
+        if (yPos < minY) yPos = minY;
+        if (yPos > maxY) yPos = maxY;
+    }
+
+    public void move(double dx, double dy) {
+        if (movable) forceMove(dx, dy);
+    }
+
+    public void hide() {
+        visible = false;
+    }
+
+    public void show() {
+        visible = true;
+    }
+
+    public void draw() {
+
+        if (visible)
+            SpriteDrawer.draw(filename, xPos, yPos);
+    }
+
+    public boolean checkCollision(Sprite that,
+            double collisionDistance) {
+        double dx = this.xPos - that.xPos;
+        double dy = this.yPos - that.yPos;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance <= collisionDistance;
+    }
+}
+~~~
+    
+[^1]: In case you are worried about the possibility of a race condition, if for example you had multiple callback functions trying to modify a shared variable at the same time...you don't need to worry about that.  In JavaScript a function runs as an *atomic* piece of code, i.e., its execution won't be interleaved with that of another function. For more details: <https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop>
+
+[^2]: A different way to simulate public static members would be to use the `prototype` member automatically created for function objects and assigned to `this` when the function is invoked as a constructor (i.e., with `new`).  I've chosen not to do it this way, and to avoid a general discussion of how `prototype` works in Javascript, in order to keep this lesson from getting too long.
