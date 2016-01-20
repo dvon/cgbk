@@ -3,14 +3,15 @@ baseurl: /cgbk
 gems:
   - jekyll-pandoc
 
-markdown: pandoc
-pandoc:
-  extensions:
-    - smart
-    - mathjax
+# markdown: pandoc
+# pandoc:
+#   extensions:
+#     - smart
+#     - mathjax
 
-# markdown: redcarpet
-# redcarpet:
-#  extensions: ["fenced_code_blocks"]
+markdown: redcarpet
+redcarpet:
+ extensions:
+   - fenced_code_blocks
 
 highlighter: pygments
