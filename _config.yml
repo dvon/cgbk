@@ -1,8 +1,8 @@
 baseurl: /cgbk
 
-gems:
-  - jekyll-pandoc
-  - jekyll-smartify
+# gems:
+#   - jekyll-pandoc
+#   - jekyll-smartify
 
 # markdown: pandoc
 # pandoc:
