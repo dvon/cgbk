@@ -6,10 +6,10 @@ no_exercises: true
 ---
 
 <ol>
-{% for page in site.pages reversed %}
-<li value="{{ page.lesson }}">
-  <a href="{{ site.baseurl }}{{ page.url }}">
-    {{ page.title }}
+{% for post in site.posts reversed %}
+<li value="{{ post.lesson }}">
+  <a href="{{ site.baseurl }}{{ post.url }}">
+    {{ post.title }}
   </a>
 </li>
 {% endfor %}
