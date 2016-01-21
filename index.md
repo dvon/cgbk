@@ -17,10 +17,12 @@ no_exercises: true
 
 <ol>
 {% for page in site.pages %}
+{% if page.lesson == null %}
 <li>
   <a href="{{ site.baseurl }}{{ page.url }}">
     {{ page.title }}
   </a>
 </li>
+{% endif %}
 {% endfor %}
 </ol>
