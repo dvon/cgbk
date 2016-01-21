@@ -16,7 +16,8 @@ no_exercises: true
 </ol>
 
 <ol>
-{% for page in site.pages | sort: 'lesson' %}
+{% assign sorted_pages = site.pages | sort: 'lesson' %}
+{% for page in sorted_pages %}
 {% if page.lesson != null %}
 <li value="{{ page.lesson }}">
   <a href="{{ site.baseurl }}{{ page.url }}">
