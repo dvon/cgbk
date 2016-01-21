@@ -37,6 +37,10 @@ code {
   margin: -1px;
 }
 
+em code {
+  padding: 1px 6px 1px 2px;
+}
+
 pre code {
   font-size: 100%;
   background-color: transparent;
@@ -45,6 +49,3 @@ pre code {
   margin: 0px;
 }
 
-q {
-  quotes: "“" "”" "‘" "’";
-}
