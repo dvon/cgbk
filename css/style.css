@@ -14,12 +14,12 @@ body {
   margin: auto;
 }
 
-.content {
-  margin-top: 50px;
+h1 {
+  margin-top: 60px;
 }
 
 h2 {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 pre, code {
@@ -34,6 +34,7 @@ pre, code {
 pre {
   padding: 4px;
   padding-left: 6px;
+  margin-bottom: 20px;
 }
 
 code {
