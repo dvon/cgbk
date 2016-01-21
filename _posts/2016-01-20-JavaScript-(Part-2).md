@@ -12,7 +12,7 @@ to create objects with members (i.e., fields and methods)
 that behave the way public and private instance members, and
 public and private static members, would in a language like Java.
 
-### Using Functions to Create Objects with Private Members
+## Using Functions to Create Objects with Private Members
 
 In a typical object-oriented programming language, the distinction
 made between a class and an object goes something like this:  a
@@ -158,7 +158,7 @@ for (i = 0; i < 5; i++) {
 console.log(j);  // prints "1"
 ~~~
 
-### Public, Private, Static
+## Public, Private, Static
 
 If you add a variable to `this` in a constructor, it acts
 like a public instance field.  Similarly, if you add a function
