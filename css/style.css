@@ -19,7 +19,7 @@ body {
 }
 
 h2 {
-  padding-top: 5px;
+  margin-top: 10px;
 }
 
 pre, code {
@@ -34,7 +34,6 @@ pre, code {
 pre {
   padding: 4px;
   padding-left: 6px;
-  margin-bottom: 5px;
 }
 
 code {
