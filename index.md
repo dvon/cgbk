@@ -16,7 +16,7 @@ no_exercises: true
 </ol>
 
 <ol>
-{% for page in site.pages %}
+{% for page in site.pages | sort: "lesson" %}
 <li>
   <a href="{{ site.baseurl }}{{ page.url }}">
     {{ page.title }}
