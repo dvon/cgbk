@@ -485,15 +485,15 @@ instances.
 with private static members?  Or what if `setNumDice` were
 defined inside `PigPlayer`?  What difference would that make?*
 
-@.  *Translate the following Java class into a JavaScript function,
+@.  _Translate the following Java class into a JavaScript function,
 following the pattern of the final version of `PigPlayer`
 above:  use `ps` for any private static members, `pb` for
 any public instance members, and `pv` for any private instance
 members; add any public static members to the constructor object
 (e.g., `PigPlayer`) after adding the constructor function.
 (You may assume `SpriteDrawer` is defined somewhere else, i.e,
-add it to your JSLint `/\*global` line at the beginning of the
-file.)*
+add it to your JSLint `/*global` line at the beginning of the
+file.)_
 
 ~~~java
 public class Sprite {
