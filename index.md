@@ -18,9 +18,9 @@ no_exercises: true
 <ol>
 {% for page in site.pages | sort: "lesson" %}
 {% if page.lesson != null %}
-<li value="{{ post.lesson }}">
-  <a href="{{ site.baseurl }}{{ post.url }}">
-    {{ post.title }}
+<li value="{{ page.lesson }}">
+  <a href="{{ site.baseurl }}{{ page.url }}">
+    {{ page.title }}
   </a>
 </li>
 {% endif %}
