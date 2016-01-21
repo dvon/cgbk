@@ -25,14 +25,14 @@
         {% if page.no_exercises == null %}
         <style>
             h1::before {
-                content: "{{ page.lesson }}. "
+                content: "Lesson {{ page.lesson }}: "
             }
             body {
                 counter-reset: lc {{ page.lesson }} ec 0;
             }
             .exercise_label::after {
                 counter-increment: ec;
-                content: counter(lc) "." counter(ec) ".";
+                content: counter(lc) "." counter(ec) ":";
             }
         </style>
         {% endif %}
