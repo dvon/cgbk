@@ -14,3 +14,15 @@ no_exercises: true
 </li>
 {% endfor %}
 </ol>
+
+<ol>
+{% for page in site.pages | sort: "lesson" %}
+{% if page.lesson != null %}
+<li value="{{ post.lesson }}">
+  <a href="{{ site.baseurl }}{{ post.url }}">
+    {{ post.title }}
+  </a>
+</li>
+{% endif %}
+{% endfor %}
+</ol>
