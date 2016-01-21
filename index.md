@@ -6,24 +6,19 @@ no_exercises: true
 ---
 
 <ol>
-{% for post in site.posts reversed %}
-<li value="{{ post.lesson }}">
-  <a href="{{ site.baseurl }}{{ post.url }}">
-    {{ post.title }}
-  </a>
-</li>
-{% endfor %}
-</ol>
 
-<ol>
 {% assign sorted_pages = site.pages | sort: 'lesson' %}
+
 {% for page in sorted_pages %}
-{% if page.lesson != null %}
-<li value="{{ page.lesson }}">
-  <a href="{{ site.baseurl }}{{ page.url }}">
-    {{ page.title }}
-  </a>
-</li>
-{% endif %}
+  {% if page.lesson != null %}
+
+    <li value="{{ page.lesson }}">
+      <a href="{{ site.baseurl }}{{ page.url }}">
+        {{ page.title }}
+      </a>
+    </li>
+
+  {% endif %}
 {% endfor %}
+
 </ol>
