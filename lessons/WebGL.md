@@ -184,13 +184,12 @@ arguments to the `clear` method.
     local web server, open square.html in a browser...  Your
     result should look like what you see in Figure 3.1 below.*
 
-<!-- ![A Cleared Canvas](webgl/3_1/screenshot.png) -->
-
 <figure style="width:300px">
-    <canvas id="canvas_3_1" width=300 height=300></canvas>
+    <img src="webgl/3_1/screenshot.png" />
+    <!-- <canvas id="canvas_3_1" width=300 height=300></canvas> -->
     <figcaption><strong>Figure 3.1:</strong> A Cleared Canvas</figcaption>
 </figure>
-<script src="webgl/3_1/webgl.js"></script>
+<!-- <script src="webgl/3_1/webgl.js"></script> -->
 
 ## A Red Square
 
