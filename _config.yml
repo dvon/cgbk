@@ -13,7 +13,7 @@ markdown: redcarpet
 redcarpet:
   extensions:
     - fenced_code_blocks
-    - smart
+    - quote  # because -smart messes up html comments
     - footnotes
 
 highlighter: pygments
