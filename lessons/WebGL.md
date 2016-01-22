@@ -585,11 +585,11 @@ With these changes, you get the image in Figure 3.3
 (depending on the random value assigned to `blueValue`).
 
 <figure style="width:300px">
-    <img src="webgl/3_3/screenshot.png" />
-    <!-- <canvas id="canvas_3_3" width=300 height=300></canvas> -->
+    <!-- <img src="webgl/3_3/screenshot.png" /> -->
+    <canvas id="canvas_3_3" width=300 height=300></canvas>
     <figcaption><strong>Figure 3.3:</strong> A More Colorful Square</figcaption>
 </figure>
-<!-- <script src="webgl/3_3/square.js"></script> -->
+<script src="webgl/3_3/square.js"></script>
 
 @.  *`gl.TRIANGLE_FAN` is an alternative to `gl.TRIANGLE_STRIP`.
     With `gl.TRIANGLE_FAN`, all triangles share the first vertex
