@@ -54,3 +54,7 @@ pre code {
   margin: 0px;
 }
 
+figure {
+  margin-left: auto;
+  margin-right: auto;
+}
