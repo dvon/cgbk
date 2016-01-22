@@ -466,13 +466,12 @@ etc.)
     square.html in a web browser...  Figure 3.2 shows what I expect
     you to see.*
 
-<!-- ![A Red Square](webgl/3_2/screenshot.png) -->
-
 <figure style="width:300px">
-    <canvas id="canvas_3_2" width=300 height=300></canvas>
+    <img src="webgl/3_2/screenshot.png" />
+    <!-- <canvas id="canvas_3_2" width=300 height=300></canvas> -->
     <figcaption><strong>Figure 3.2:</strong> A Red Square</figcaption>
 </figure>
-<script src="webgl/3_2/square.js"></script>
+<!-- <script src="webgl/3_2/square.js"></script> -->
 
 @.  *Modify this example so that the canvas size on the page is
     400x300.  Notice that the square is no longer square.  (It's
@@ -585,13 +584,12 @@ gl.uniform1f(blueValueUniform, Math.random());
 With these changes, you get the image in Figure 3.3
 (depending on the random value assigned to `blueValue`).
 
-<!-- ![A More Colorful Square](webgl/3_3/screenshot.png) -->
-
 <figure style="width:300px">
-    <canvas id="canvas_3_3" width=300 height=300></canvas>
+    <img src="webgl/3_3/screenshot.png" />
+    <!-- <canvas id="canvas_3_3" width=300 height=300></canvas> -->
     <figcaption><strong>Figure 3.3:</strong> A More Colorful Square</figcaption>
 </figure>
-<script src="webgl/3_3/square.js"></script>
+<!-- <script src="webgl/3_3/square.js"></script> -->
 
 @.  *`gl.TRIANGLE_FAN` is an alternative to `gl.TRIANGLE_STRIP`.
     With `gl.TRIANGLE_FAN`, all triangles share the first vertex
