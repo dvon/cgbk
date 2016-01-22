@@ -15,6 +15,7 @@ redcarpet:
     - fenced_code_blocks
     - smart
     - footnotes
+    - xhtml
 
 highlighter: pygments
 
