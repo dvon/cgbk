@@ -23,11 +23,11 @@
 
     // global.onload = function () {
     wasOnload = function () {
-        gl = document.getElementById("canvas_3_2").getContext(
+        gl = document.getElementById("canvas_4_2").getContext(
                 "experimental-webgl");
 
         // Request vertex shader source.
-        readFile("webgl/3_2/square.vert", onVertexShaderLoad);
+        readFile("tf/4_2/squares.vert", onVertexShaderLoad);
     };
 
     onVertexShaderLoad = function (shaderSource) {
@@ -39,7 +39,7 @@
         gl.compileShader(vertexShader);
 
         // Request fragment shader source.
-        readFile("webgl/3_2/square.frag", onFragmentShaderLoad);
+        readFile("tf/4_2/squares.frag", onFragmentShaderLoad);
     };
 
     onFragmentShaderLoad = function (shaderSource) {
@@ -55,7 +55,8 @@
 
     main = function () {
         var shaderProgram, vertexData, vertexBuffer,
-                vertexPositionAttribute;
+                vertexPositionAttribute, scaleFactorUniform,
+                colorUniform;
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -87,15 +88,52 @@
                 "position");
         gl.enableVertexAttribArray(vertexPositionAttribute);
 
+        // Get references to vertex shader "scaleFactor" variable and
+        // fragment shader "color" variable.
+        scaleFactorUniform = gl.getUniformLocation(shaderProgram,
+                "scaleFactor");
+        colorUniform = gl.getUniformLocation(shaderProgram, "color");
+
+        // Set up for drawing from vertex buffer.  (In the old version,
+        // where the square was drawn just once, this statement came
+        // right before calling gl.drawArrays.  But it only needs to
+        // happen once, even if the square is drawn multiple times, so
+        // I've moved it to the part of the code where we're setting
+        // things up.)
+        gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT,
+                false, 12, 0);
+
         // Clear the canvas.
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        // Specify which buffer vertex data will come from, and how
-        // that data should be interpreted; then draw the square.
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-        gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT,
-                false, 12, 0);
+        // In the old version gl.bindBuffer was called here.  But it
+        // wasn't really necessary, since there's only one vertex data
+        // buffer in the program and gl.bindBuffer would have already
+        // been called for it at this point.
+
+        // Set vertex shader's "scaleFactor" variable so that square
+        // is scaled to 1.25 times its original size.
+        gl.uniform1f(scaleFactorUniform, 1.25);
+
+        // Set fragment shader's "color" variable to orange.
+        gl.uniform3f(colorUniform, 1.0, 0.6, 0.1);
+
+        // Draw the square.
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Set vertex shader's "scaleFactor" variable so that square
+        // is scaled to its original size, set fragment shader's
+        // "color" variable to yellow, and draw the square.
+        gl.uniform1f(scaleFactorUniform, 1.0);
+        gl.uniform3f(colorUniform, 1.0, 0.9, 0.1);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Set vertex shader's "scaleFactor" variable so that square
+        // is scaled to 0.75 times its original size, set fragment
+        // shader's "color" variable to blue, and draw the square.
+        gl.uniform1f(scaleFactorUniform, 0.75);
+        gl.uniform3f(colorUniform, 0.1, 0.3, 0.8);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
 

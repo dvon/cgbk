@@ -185,11 +185,10 @@ arguments to the `clear` method.
     result should look like what you see in Figure 3.1 below.*
 
 <figure style="width:300px">
-    <img src="webgl/3_1/screenshot.png" />
-    <!-- <canvas id="canvas_3_1" width=300 height=300></canvas> -->
+    <canvas id="canvas_3_1" width=300 height=300></canvas>
     <figcaption><strong>Figure 3.1:</strong> A Cleared Canvas</figcaption>
 </figure>
-<!-- <script src="webgl/3_1/webgl.js"></script> -->
+<script src="webgl/3_1/webgl.js"></script>
 
 ## A Red Square
 
@@ -467,11 +466,10 @@ etc.)
     you to see.*
 
 <figure style="width:300px">
-    <img src="webgl/3_2/screenshot.png" />
-    <!-- <canvas id="canvas_3_2" width=300 height=300></canvas> -->
+    <canvas id="canvas_3_2" width=300 height=300></canvas>
     <figcaption><strong>Figure 3.2:</strong> A Red Square</figcaption>
 </figure>
-<!-- <script src="webgl/3_2/square.js"></script> -->
+<script src="webgl/3_2/square.js"></script>
 
 @.  *Modify this example so that the canvas size on the page is
     400x300.  Notice that the square is no longer square.  (It's
@@ -585,11 +583,10 @@ With these changes, you get the image in Figure 3.3
 (depending on the random value assigned to `blueValue`).
 
 <figure style="width:300px">
-    <img src="webgl/3_3/screenshot.png" />
-    <!-- <canvas id="canvas_3_3" width=300 height=300></canvas> -->
+    <canvas id="canvas_3_3" width=300 height=300></canvas>
     <figcaption><strong>Figure 3.3:</strong> A More Colorful Square</figcaption>
 </figure>
-<!-- <script src="webgl/3_3/square.js"></script> -->
+<script src="webgl/3_3/square.js"></script>
 
 @.  *`gl.TRIANGLE_FAN` is an alternative to `gl.TRIANGLE_STRIP`.
     With `gl.TRIANGLE_FAN`, all triangles share the first vertex

@@ -10,20 +10,13 @@ no_exercises: true
 Lessons prepared for CIS 487 Interactive 3D Graphics, January
 2016.
 
-<ol>
-
 {% assign sorted_pages = site.pages | sort: 'lesson' %}
 
+<p>
 {% for page in sorted_pages %}
-  {% if page.lesson != null %}
-
-    <li value="{{ page.lesson }}">
-      <a href="{{ site.baseurl }}{{ page.url }}">
-        {{ page.title }}
-      </a>
-    </li>
-
-  {% endif %}
+{% if page.lesson != null %}
+<strong>Lesson {{ page.lesson }}:</strong>
+<a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a><br />
+{% endif %}
 {% endfor %}
-
-</ol>
+</p>

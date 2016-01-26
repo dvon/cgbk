@@ -23,11 +23,11 @@
 
     // global.onload = function () {
     wasOnload = function () {
-        gl = document.getElementById("canvas_3_2").getContext(
+        gl = document.getElementById("canvas_4_4").getContext(
                 "experimental-webgl");
 
         // Request vertex shader source.
-        readFile("webgl/3_2/square.vert", onVertexShaderLoad);
+        readFile("tf/4_4/squares.vert", onVertexShaderLoad);
     };
 
     onVertexShaderLoad = function (shaderSource) {
@@ -39,7 +39,7 @@
         gl.compileShader(vertexShader);
 
         // Request fragment shader source.
-        readFile("webgl/3_2/square.frag", onFragmentShaderLoad);
+        readFile("tf/4_4/squares.frag", onFragmentShaderLoad);
     };
 
     onFragmentShaderLoad = function (shaderSource) {
@@ -55,7 +55,8 @@
 
     main = function () {
         var shaderProgram, vertexData, vertexBuffer,
-                vertexPositionAttribute;
+                vertexPositionAttribute, scaleFactorUniform,
+                colorUniform, xTranslationUniform;
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -87,15 +88,42 @@
                 "position");
         gl.enableVertexAttribArray(vertexPositionAttribute);
 
+        // Get references to shaders' uniform variables.
+        scaleFactorUniform = gl.getUniformLocation(shaderProgram,
+                "scaleFactor");
+        xTranslationUniform = gl.getUniformLocation(shaderProgram,
+                "xTranslation");
+        colorUniform = gl.getUniformLocation(shaderProgram, "color");
+
+        // Set up for drawing from vertex buffer.
+        gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT,
+                false, 12, 0);
+
         // Clear the canvas.
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        // Specify which buffer vertex data will come from, and how
-        // that data should be interpreted; then draw the square.
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-        gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT,
-                false, 12, 0);
+        // Apply a scaling transformation:  make everything bigger.
+        gl.uniform1f(scaleFactorUniform, 1.25);
+
+        // Set vertex shader's "xTranslation" variable so that square
+        // is moved 0.5 to the left.
+        gl.uniform1f(xTranslationUniform, -0.5);
+
+        // Draw the square (orange).
+        gl.uniform3f(colorUniform, 1.0, 0.6, 0.1);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Make everything normal size, center it, draw square (yellow).
+        gl.uniform1f(scaleFactorUniform, 1.0);
+        gl.uniform1f(xTranslationUniform, 0.0);
+        gl.uniform3f(colorUniform, 1.0, 0.9, 0.1);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Make everything smaller, move 0.5 right, draw square (blue).
+        gl.uniform1f(scaleFactorUniform, 0.75);
+        gl.uniform1f(xTranslationUniform, 0.5);
+        gl.uniform3f(colorUniform, 0.1, 0.3, 0.8);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
 

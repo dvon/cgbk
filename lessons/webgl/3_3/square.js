@@ -6,7 +6,7 @@
 
     var readFile, gl, onVertexShaderLoad, vertexShader,
             onFragmentShaderLoad, fragmentShader, main,
-            formerOnload, blueValueUniform;
+            wasOnload, blueValueUniform;
 
     readFile = function (path, callback) {
         var r = new XMLHttpRequest();
@@ -22,7 +22,7 @@
     };
 
     // global.onload = function () {
-    formerOnload = function () {
+    wasOnload = function () {
         gl = document.getElementById("canvas_3_3").getContext(
                 "experimental-webgl");
 
@@ -103,6 +103,7 @@
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
 
-    formerOnload();
+    wasOnload();
+    
 }(this));
 

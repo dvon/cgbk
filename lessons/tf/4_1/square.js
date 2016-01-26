@@ -23,11 +23,11 @@
 
     // global.onload = function () {
     wasOnload = function () {
-        gl = document.getElementById("canvas_3_2").getContext(
+        gl = document.getElementById("canvas_4_1").getContext(
                 "experimental-webgl");
 
         // Request vertex shader source.
-        readFile("webgl/3_2/square.vert", onVertexShaderLoad);
+        readFile("tf/4_1/square.vert", onVertexShaderLoad);
     };
 
     onVertexShaderLoad = function (shaderSource) {
@@ -39,7 +39,7 @@
         gl.compileShader(vertexShader);
 
         // Request fragment shader source.
-        readFile("webgl/3_2/square.frag", onFragmentShaderLoad);
+        readFile("tf/4_1/square.frag", onFragmentShaderLoad);
     };
 
     onFragmentShaderLoad = function (shaderSource) {
