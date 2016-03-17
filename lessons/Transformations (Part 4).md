@@ -336,9 +336,9 @@ up very small or very large.
     out an example...*
 
 -   *Fill in the values of the transformation matrix for a
-    frustum with the *near* plane at $z = -4$, the *far* plane
-    at $z = -8$, the *right* side of the front at $x = 1$, and
-    the *top* of the front at $y = 1$.*
+    frustum with the _near_ plane at $z = -4$, the _far_ plane
+    at $z = -8$, the _right_ side of the front at $x = 1$, and
+    the _top_ of the front at $y = 1$.*
 -   *Use this matrix to transform the points $(0,0,-4)$,
     $(0,0,-5)$, $(0,0-6)$, $(0,0,-7)$, and $(0,0,-8)$.*
 -   *Plot your results on a line.  Notice that the intervals
