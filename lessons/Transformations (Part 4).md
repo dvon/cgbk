@@ -323,40 +323,40 @@ up very small or very large.
 
 ![A Slightly Different Purple Cube](example_05/screenshot.png)
 
-@.  Following the process above used to determine that the
+@.  *Following the process above used to determine that the
     "amount to scale $x$" value in the perspective normalization
     transformation should be
     $\frac{\textit{near}}{\textit{right}}$,
     show that the "amount to scale $y$" value should be
-    $\frac{\textit{near}}{\textit{top}}$.
+    $\frac{\textit{near}}{\textit{top}}$.*
 
-@.  The perspective normalization transformation explained above
+@.  *The perspective normalization transformation explained above
     works, but it has one (perhaps surprising) quirk:  the
     mapping from $z$ to $z'$ is not linear.  Show this by working
-    out an example...
+    out an example...*
 
-    -   Fill in the values of the transformation matrix for a
-        frustum with the *near* plane at $z = -4$, the *far* plane
-        at $z = -8$, the *right* side of the front at $x = 1$, and
-        the *top* of the front at $y = 1$.
-    -   Use this matrix to transform the points $(0,0,-4)$,
-        $(0,0,-5)$, $(0,0-6)$, $(0,0,-7)$, and $(0,0,-8)$.
-    -   Plot your results on a line.  Notice that the intervals
-        between transformed points get smaller as you move from
-        the front of the frustum to the back.
+-   *Fill in the values of the transformation matrix for a
+    frustum with the *near* plane at $z = -4$, the *far* plane
+    at $z = -8$, the *right* side of the front at $x = 1$, and
+    the *top* of the front at $y = 1$.*
+-   *Use this matrix to transform the points $(0,0,-4)$,
+    $(0,0,-5)$, $(0,0-6)$, $(0,0,-7)$, and $(0,0,-8)$.*
+-   *Plot your results on a line.  Notice that the intervals
+    between transformed points get smaller as you move from
+    the front of the frustum to the back.*
 
-    Is this a problem?  In theory, no, because the ordering of $z$
-    values is preserved, so anything in front of something else
-    in the frustum will still be in front in the canonical view
-    volume (and will pass the depth test).  In practice, however,
-    the precision of the depth buffer is limited, so the accuracy
-    of the depth test will decrease as you go from the front of
-    the scene to the back.  This problem gets worse if the near
-    plane is too close to the view point and / or the far plane
-    is too far from the near plane.
+*Is this a problem?  In theory, no, because the ordering of $z$
+values is preserved, so anything in front of something else
+in the frustum will still be in front in the canonical view
+volume (and will pass the depth test).  In practice, however,
+the precision of the depth buffer is limited, so the accuracy
+of the depth test will decrease as you go from the front of
+the scene to the back.  This problem gets worse if the near
+plane is too close to the view point and / or the far plane
+is too far from the near plane.*
 
-@.  Based on what you've learned in this lesson, write a WebGL
+@.  *Based on what you've learned in this lesson, write a WebGL
     program that displays a (non-functioning) Rubik's Cube.
-    Figure 11 shows a possible solution.
+    Figure 11 shows a possible solution.*
 
 ![Rubik's Cube](exercise_04/screenshot.png)
