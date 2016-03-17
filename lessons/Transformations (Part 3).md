@@ -16,7 +16,7 @@ about the $x$, $y$ and $z$ axes.  In the next lesson we'll add
 a transformation that distorts the scene in a way that simulates
 a 3D perspective effect.
 
-![Rotation About the $z$ Axis](z_rotation.png)
+![Rotation About the z Axis](z_rotation.png)
 
 <!--
 \begin{tikzpicture}[scale=0.5]
@@ -88,29 +88,29 @@ as a matrix multiplication, with the vertices given in
 homogeneous coordinates:
 
 > $\begin{bmatrix}
-  x' \\
-  y' \\
-  z' \\
+  x' \\\\\\\\
+  y' \\\\\\\\
+  z' \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  x \cos \theta - y \sin \theta \\
-  x \sin \theta + y \cos \theta \\
-  z \\
+  x \cos \theta - y \sin \theta \\\\\\\\
+  x \sin \theta + y \cos \theta \\\\\\\\
+  z \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \cos \theta & - \sin \theta & 0 & 0 \\
-  \sin \theta &   \cos \theta & 0 & 0 \\
-  0 & 0 & 1 & 0 \\
+  \cos \theta & - \sin \theta & 0 & 0 \\\\\\\\
+  \sin \theta &   \cos \theta & 0 & 0 \\\\\\\\
+  0 & 0 & 1 & 0 \\\\\\\\
   0 & 0 & 0 & 1
   \end{bmatrix}
   \begin{bmatrix}
-  x \\
-  y \\
-  z \\
+  x \\\\\\\\
+  y \\\\\\\\
+  z \\\\\\\\
   1
   \end{bmatrix}$
 
@@ -493,29 +493,29 @@ Here's the (equivalent) $x$ axis rotation written as a matrix
 multiplication, with the vertices given in homogeneous coordinates.
 
 > $\begin{bmatrix}
-  x' \\
-  y' \\
-  z' \\
+  x' \\\\\\\\
+  y' \\\\\\\\
+  z' \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  x \\
-  y \cos \theta - z \sin \theta \\
-  y \sin \theta + z \cos \theta \\
+  x \\\\\\\\
+  y \cos \theta - z \sin \theta \\\\\\\\
+  y \sin \theta + z \cos \theta \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  1 & 0 & 0 & 0 \\
-  0 & \cos \theta & - \sin \theta & 0 \\
-  0 & \sin \theta & \cos \theta & 0 \\
+  1 & 0 & 0 & 0 \\\\\\\\
+  0 & \cos \theta & - \sin \theta & 0 \\\\\\\\
+  0 & \sin \theta & \cos \theta & 0 \\\\\\\\
   0 & 0 & 0 & 1
   \end{bmatrix}
   \begin{bmatrix}
-  x \\
-  y \\
-  z \\
+  x \\\\\\\\
+  y \\\\\\\\
+  z \\\\\\\\
   1
   \end{bmatrix}$
 
@@ -530,29 +530,29 @@ $y$ axis rotation:
 Here's the $y$ axis rotation written as a matrix multiplication:
 
 > $\begin{bmatrix}
-  x' \\
-  y' \\
-  z' \\
+  x' \\\\\\\\
+  y' \\\\\\\\
+  z' \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  z \sin \theta + x \cos \theta \\
-  y \\
-  z \cos \theta - x \sin \theta \\
+  z \sin \theta + x \cos \theta \\\\\\\\
+  y \\\\\\\\
+  z \cos \theta - x \sin \theta \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \cos \theta & 0 & \sin \theta & 0 \\
-  0 & 1 & 0 & 0 \\
-  - \sin \theta & 0 & \cos \theta & 0 \\
+  \cos \theta & 0 & \sin \theta & 0 \\\\\\\\
+  0 & 1 & 0 & 0 \\\\\\\\
+  - \sin \theta & 0 & \cos \theta & 0 \\\\\\\\
   0 & 0 & 0 & 1
   \end{bmatrix}
   \begin{bmatrix}
-  x \\
-  y \\
-  z \\
+  x \\\\\\\\
+  y \\\\\\\\
+  z \\\\\\\\
   1
   \end{bmatrix}$
 

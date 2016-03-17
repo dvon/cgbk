@@ -99,36 +99,36 @@ We'll start with the following four variables:
 Now consider the following transformation:
 
 > $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
+  x' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  y' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  z' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \frac{x}{-z} \\\\\\\\
-  \frac{y}{-z} \\\\\\\\
-  -\alpha + \frac{\beta}{-z} \\\\\\\\
+  \frac{x}{-z} \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  \frac{y}{-z} \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  -\alpha + \frac{\beta}{-z} \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  \alpha z + \beta \\\\\\\\
+  x \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  y \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  \alpha z + \beta \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   -z
   \end{bmatrix}
   =
   \begin{bmatrix}
-  1 & 0 & 0 & 0 \\\\\\\\
-  0 & 1 & 0 & 0 \\\\\\\\
-  0 & 0 & \alpha & \beta \\\\\\\\
+  1 & 0 & 0 & 0 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  0 & 1 & 0 & 0 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  0 & 0 & \alpha & \beta \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   0 & 0 & -1 & 0
   \end{bmatrix}
   \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
+  x \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  y \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  z \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   1
   \end{bmatrix}$
 
@@ -255,9 +255,9 @@ values chosen to take care of $z$, we've finally got the
 perspective normalization matrix we need:
 
 > $\begin{bmatrix}
-  \frac{\textit{near}}{\textit{right}} & 0 & 0 & 0 \\\\\\\\
-  0 & \frac{\textit{near}}{\textit{top}} & 0 & 0 \\\\\\\\
-  0 & 0 & \frac{\textit{near} + \textit{far}}{\textit{near} - \textit{far}} & \frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}} \\\\\\\\
+  \frac{\textit{near}}{\textit{right}} & 0 & 0 & 0 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  0 & \frac{\textit{near}}{\textit{top}} & 0 & 0 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  0 & 0 & \frac{\textit{near} + \textit{far}}{\textit{near} - \textit{far}} & \frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}} \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   0 & 0 & -1 & 0
   \end{bmatrix}$
 
