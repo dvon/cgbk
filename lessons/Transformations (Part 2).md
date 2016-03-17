@@ -33,8 +33,8 @@ include both:
 
 This could be written as three equations...
 
-> $x' = s_x x$  \
-  $y' = s_y y$  \
+> $x' = s_x x$  
+  $y' = s_y y$  
   $z' = s_z z$
 
 ...but it's typically written as one matrix multiplication:

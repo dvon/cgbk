@@ -3,6 +3,8 @@ baseurl: /cgbk
 # gems:
 #   - jekyll-pandoc
 
+highlighter: pygments
+
 # markdown: pandoc
 # pandoc:
 #   extensions:
@@ -16,6 +18,4 @@ redcarpet:
     - smart
     - footnotes
     - xhtml
-
-highlighter: pygments
-
+    - no_intra_emphasis

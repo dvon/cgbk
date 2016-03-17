@@ -185,10 +185,12 @@ arguments to the `clear` method.
     result should look like what you see in Figure 3.1 below.*
 
 <figure style="width:300px">
-    <canvas id="canvas_3_1" width=300 height=300></canvas>
-    <figcaption><strong>Figure 3.1:</strong> A Cleared Canvas</figcaption>
+<canvas id="canvas_3_1" width=300 height=300></canvas>
+<figcaption><strong>Figure 3.1:</strong> A Cleared Canvas</figcaption>
 </figure>
 <script src="webgl/3_1/webgl.js"></script>
+
+<!-- ![__Figure 3.1:__ A Cleared Canvas](webgl/3_1/screenshot.png) -->
 
 ## A Red Square
 
@@ -466,8 +468,8 @@ etc.)
     you to see.*
 
 <figure style="width:300px">
-    <canvas id="canvas_3_2" width=300 height=300></canvas>
-    <figcaption><strong>Figure 3.2:</strong> A Red Square</figcaption>
+<canvas id="canvas_3_2" width=300 height=300></canvas>
+<figcaption><strong>Figure 3.2:</strong> A Red Square</figcaption>
 </figure>
 <script src="webgl/3_2/square.js"></script>
 
@@ -583,8 +585,8 @@ With these changes, you get the image in Figure 3.3
 (depending on the random value assigned to `blueValue`).
 
 <figure style="width:300px">
-    <canvas id="canvas_3_3" width=300 height=300></canvas>
-    <figcaption><strong>Figure 3.3:</strong> A More Colorful Square</figcaption>
+<canvas id="canvas_3_3" width=300 height=300></canvas>
+<figcaption><strong>Figure 3.3:</strong> A More Colorful Square</figcaption>
 </figure>
 <script src="webgl/3_3/square.js"></script>
 
