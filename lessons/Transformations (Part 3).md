@@ -1,4 +1,10 @@
-# Transformations (3)
+---
+layout: default
+title: Transformations (Part 3)
+lesson: 6
+---
+
+# Transformations (Part 3)
 
 The first lesson on transformations introduced scaling and
 translation transformations; the second lesson showed how
@@ -46,26 +52,26 @@ representing a $z$ axis rotation from vertex $v$ to vertex $v'$.
 We can represent the coordinates of $v$ in terms of $r$ and
 $\phi$...
 
-> $x = r \cos \phi$ \
+> $x = r \cos \phi$  
   $y = r \sin \phi$
 
 ...and the coordinates of $v'$ in terms of $r$, $\theta$ and
 $\phi$:
 
-> $x' = r \cos (\phi + \theta)$ \
+> $x' = r \cos (\phi + \theta)$  
   $y' = r \sin (\phi + \theta)$
 
 We can then use the following identities...
 
 > $\cos (\phi + \theta) = \cos \phi \cos \theta - \sin \phi
-  \sin \theta$ \
+  \sin \theta$  
   $\sin (\phi + \theta) = \cos \phi \sin \theta + \sin \phi
   \cos \theta$
 
 ...to rewrite the coordinates of $v'$:
 
 > $x' = r \cos (\phi + \theta) = r \cos \phi \cos \theta -
-  r \sin \phi \sin \theta$ \
+  r \sin \phi \sin \theta$  
   $y' = r \sin (\phi + \theta) = r \cos \phi \sin \theta +
   r \sin \phi \cos \theta$
 
@@ -74,7 +80,7 @@ can get rid of $r$ and $\phi$, so that we have the coordinates of
 the rotated point $v'$ in terms of only the coordinates of the
 original point $v$ and the angle of rotation $\theta$:
 
-> $x' = x \cos \theta - y \sin \theta$ \
+> $x' = x \cos \theta - y \sin \theta$  
   $y' = x \sin \theta + y \cos \theta$
 
 This is our $z$ axis rotation transformation.  It can be rewritten
@@ -472,15 +478,15 @@ the point of this?  It shows that...
 Here are our $z$ axis equations.  ($z'$ = $z$ was excluded before,
 until we moved to the matrix representation.)
 
-> $x' = x \cos \theta - y \sin \theta$ \
-  $y' = x \sin \theta + y \cos \theta$ \
+> $x' = x \cos \theta - y \sin \theta$  
+  $y' = x \sin \theta + y \cos \theta$  
   $z' = z$
 
 Substituting $y$ for $x$, $z$ for $y$, and $x$ for $z$, we get
 equations for an $x$ axis rotation:
 
-> $y' = y \cos \theta - z \sin \theta$ \
-  $z' = y \sin \theta + z \cos \theta$ \
+> $y' = y \cos \theta - z \sin \theta$  
+  $z' = y \sin \theta + z \cos \theta$  
   $x' = x$
 
 Here's the (equivalent) $x$ axis rotation written as a matrix
@@ -517,8 +523,8 @@ Or, if we go back to the $z$ axis rotation equations and substitute
 $z$ for $x$, $x$ for $y$, and $y$ for $z$, we get equations for a
 $y$ axis rotation:
 
-> $z' = z \cos \theta - x \sin \theta$ \
-  $x' = z \sin \theta + x \cos \theta$ \
+> $z' = z \cos \theta - x \sin \theta$  
+  $x' = z \sin \theta + x \cos \theta$  
   $y' = y$
 
 Here's the $y$ axis rotation written as a matrix multiplication:

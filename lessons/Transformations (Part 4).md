@@ -1,4 +1,10 @@
-# Transformations (4)
+---
+layout: default
+title: Transformations (Part 4)
+lesson: 7
+---
+
+# Transformations (Part 4)
 
 In this lesson we derive a more complex transformation with a
 very specific purpose, simulating a perspective effect, where
@@ -93,36 +99,36 @@ We'll start with the following four variables:
 Now consider the following transformation:
 
 > $\begin{bmatrix}
-  x' \\
-  y' \\
-  z' \\
+  x' \\\\\\\\
+  y' \\\\\\\\
+  z' \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \frac{x}{-z} \\
-  \frac{y}{-z} \\
-  -\alpha + \frac{\beta}{-z} \\
+  \frac{x}{-z} \\\\\\\\
+  \frac{y}{-z} \\\\\\\\
+  -\alpha + \frac{\beta}{-z} \\\\\\\\
   1
   \end{bmatrix}
   =
   \begin{bmatrix}
-  x \\
-  y \\
-  \alpha z + \beta \\
+  x \\\\\\\\
+  y \\\\\\\\
+  \alpha z + \beta \\\\\\\\
   -z
   \end{bmatrix}
   =
   \begin{bmatrix}
-  1 & 0 & 0 & 0 \\
-  0 & 1 & 0 & 0 \\
-  0 & 0 & \alpha & \beta \\
+  1 & 0 & 0 & 0 \\\\\\\\
+  0 & 1 & 0 & 0 \\\\\\\\
+  0 & 0 & \alpha & \beta \\\\\\\\
   0 & 0 & -1 & 0
   \end{bmatrix}
   \begin{bmatrix}
-  x \\
-  y \\
-  z \\
+  x \\\\\\\\
+  y \\\\\\\\
+  z \\\\\\\\
   1
   \end{bmatrix}$
 
@@ -140,17 +146,17 @@ canonical view volume, which is at $z=-1$.  If we set $\alpha$
 and $\beta$...
 
 > $\alpha = \frac{\textit{near} + \textit{far}}{
-  \textit{near} - \textit{far}}$ \
+  \textit{near} - \textit{far}}$  
   $\beta = \frac{2 \times \textit{near} \times \textit{far}}{
   \textit{near} - \textit{far}}$
 
 ...and $z = -\textit{near}$, then:
 
-> $z' = -\alpha + \frac{\beta}{\textit{near}}$ \
+> $z' = -\alpha + \frac{\beta}{\textit{near}}$  
   $z' = -\frac{\textit{near} + \textit{far}}{\textit{near} - \textit{far}} +
-        \displaystyle\frac{\frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}}}{\textit{near}}$ \
-  $z' = \frac{-\textit{near} - \textit{far} + 2 \times \textit{far}}{\textit{near} - \textit{far}}$ \
-  $z' = \frac{-\textit{near} + \textit{far}}{\textit{near} - \textit{far}}$ \
+        \displaystyle\frac{\frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}}}{\textit{near}}$  
+  $z' = \frac{-\textit{near} - \textit{far} + 2 \times \textit{far}}{\textit{near} - \textit{far}}$  
+  $z' = \frac{-\textit{near} + \textit{far}}{\textit{near} - \textit{far}}$  
   $z' = -1$
 
 This takes care of the front of the frustum, which needed to be
@@ -163,11 +169,11 @@ canonical view volume, which is at $z=1$.
 If $z = -\textit{far}$ (and $\alpha$ and $\beta$ have the
 values defined above):
 
-> $z' = -\alpha + \frac{\beta}{\textit{far}}$ \
+> $z' = -\alpha + \frac{\beta}{\textit{far}}$  
   $z' = -\frac{\textit{near} + \textit{far}}{\textit{near} - \textit{far}} +
-        \displaystyle\frac{\frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}}}{\textit{far}}$ \
-  $z' = \frac{-\textit{near} - \textit{far} + 2 \times \textit{near}}{\textit{near} - \textit{far}}$ \
-  $z' = \frac{\textit{near} - \textit{far}}{\textit{near} - \textit{far}}$ \
+        \displaystyle\frac{\frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}}}{\textit{far}}$  
+  $z' = \frac{-\textit{near} - \textit{far} + 2 \times \textit{near}}{\textit{near} - \textit{far}}$  
+  $z' = \frac{\textit{near} - \textit{far}}{\textit{near} - \textit{far}}$  
   $z' = 1$
 
 This takes care of the back of the frustum.  (What a fortuitous
@@ -249,9 +255,9 @@ values chosen to take care of $z$, we've finally got the
 perspective normalization matrix we need:
 
 > $\begin{bmatrix}
-  \frac{\textit{near}}{\textit{right}} & 0 & 0 & 0 \\
-  0 & \frac{\textit{near}}{\textit{top}} & 0 & 0 \\
-  0 & 0 & \frac{\textit{near} + \textit{far}}{\textit{near} - \textit{far}} & \frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}} \\
+  \frac{\textit{near}}{\textit{right}} & 0 & 0 & 0 \\\\\\\\
+  0 & \frac{\textit{near}}{\textit{top}} & 0 & 0 \\\\\\\\
+  0 & 0 & \frac{\textit{near} + \textit{far}}{\textit{near} - \textit{far}} & \frac{2 \times \textit{near} \times \textit{far}}{\textit{near} - \textit{far}} \\\\\\\\
   0 & 0 & -1 & 0
   \end{bmatrix}$
 
