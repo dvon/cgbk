@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        
+        
+        <link rel="stylesheet" href="/cgbk/css/trac.css" />
+        
+        
+        <link rel="stylesheet" href="/cgbk/css/style.css" />
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                extensions: ["tex2jax.js"],
+                jax: ["input/TeX","output/HTML-CSS"],
+                tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
+                "HTML-CSS": {webFont: "STIX-Web"}
+            });
+        </script>
+        <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+                type="text/javascript"></script>
+        
+        
+        
+        <style>
+            h1::before {
+                content: "Lesson 5: "
+            }
+            body {
+                counter-reset: lc 5 ec 0;
+            }
+            .exercise_label::after {
+                counter-increment: ec;
+                content: counter(lc) "." counter(ec) ":";
+            }
+        </style>
+        
+        
+    </head>
+    <body>
+        <div class="content">
+            <h1>Transformations (Part 2)</h1>
+
+<p>This lesson will show you how matrix multiplication can be used
+to implement the scaling and translation transformations
+introduced in the previous lesson.  We&rsquo;ll see also that it&rsquo;s
+possible to represent the cumulative effect of a series of
+transformations with just one 4x4 matrix.  Then we&rsquo;ll redo the
+previous lesson&rsquo;s third example, using matrix multiplication in
+the vertex shader code.</p>
+
+<h2>Transformations Represented by Matrices</h2>
+
+<p>The previous lesson&rsquo;s examples illustrate two possible scaling
+transformations:</p>
+
+<p>1)  Multiply the $x$ coordinate of every vertex by $\frac{3}{4}$
+    (i.e., the reciprocal of the aspect ratio).</p>
+
+<p>2)  Multiply the $x$, $y$ and $z$ coordinates of every vertex by
+    the same value (<code>scaleFactor</code>).</p>
+
+<p>We can define a general 3D scaling transformation that would
+include both:</p>
+
+<blockquote>
+<p>Scale a vertex $(x, y, z)$ by factors $(s_x, s_y, s_z)$:
+  $(x&rsquo;, y&rsquo;, z&rsquo;) = (s_x x, s_y y, s_z z)$</p>
+</blockquote>
+
+<p>This could be written as three equations&hellip;</p>
+
+<blockquote>
+<p>$x&rsquo; = s_x x$<br/>
+  $y&rsquo; = s_y y$<br/>
+  $z&rsquo; = s_z z$</p>
+</blockquote>
+
+<p>&hellip;but it&rsquo;s typically written as one matrix multiplication:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; \\
+  y&rsquo; \\
+  z&rsquo;
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  s_x &amp; 0   &amp; 0   \\
+  0   &amp; s_y &amp; 0   \\
+  0   &amp; 0   &amp; s_z
+  \end{bmatrix}
+  \begin{bmatrix}
+  x \\
+  y \\
+  z
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>What does this mean? Well, here&rsquo;s how multiplication would be
+defined for a general 3x3 matrix times a 3x1 matrix representing a
+vertex with $x$, $y$ and $z$ coordinates:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; \\
+  y&rsquo; \\
+  z&rsquo;
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  m_{11} &amp; m_{12} &amp; m_{13} \\
+  m_{21} &amp; m_{22} &amp; m_{23} \\
+  m_{31} &amp; m_{32} &amp; m_{33}
+  \end{bmatrix}
+  \begin{bmatrix}
+  x \\
+  y \\
+  z
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  m_{11} x + m_{12} y + m_{13} z \\
+  m_{21} x + m_{22} y + m_{23} z \\
+  m_{31} x + m_{32} y + m_{33} z
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>Notice that $m_{11}$ provides a way of making $x&rsquo;$ depend on
+$x$; it&rsquo;s the term you use if you want $x&rsquo;$ to be equal to $x$
+times a scaling factor:</p>
+
+<blockquote>
+<p>$x&rsquo; = s_x x + 0 \times y + 0 \times z$<br/>
+  $x&rsquo; = s_x x$</p>
+</blockquote>
+
+<p>Similarly $m_{22}$ is the term you use
+if you want $y&rsquo;$ to depend on $y$, and $m_{33}$ is the term you
+use if you want $z&rsquo;$ to depend on $z$.</p>
+
+<p>What if $m_{11}$, $m_{22}$
+and $m_{33}$ are all $1$?  We have the <em>identity matrix</em>:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  1 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>This is the matrix which, if you multiply it times a vertex,
+gives you back the same vertex you started with.  We&rsquo;ll come back
+to this later.  What about the other terms&mdash;$m_{12}$, $m_{13}$,
+etc.?  They give you ways of making, for example, $x&rsquo;$ depend on
+$y$ or $z$.  We don&rsquo;t need them for scaling, but we&rsquo;ll use them
+later for rotation transformations.</p>
+
+<p>So we can use a 3x3 matrix to represent a general 3D scaling
+transformation.  What about translation?  In the examples above,
+we added the same value to the $x$ coordinate of every vertex.
+But there&rsquo;s no term in the 3x3 matrix we can use to do this.
+We can make $x&rsquo;$ depend on $x$, $y$ or $z$, but we can&rsquo;t just add
+the same thing to every $x$, regardless of the $y$, $z$ or
+original $x$ values.  A 3x3 matrix won&rsquo;t work.</p>
+
+<p>But a 4x4 will:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; \\
+  y&rsquo; \\
+  z&rsquo; \\
+  1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  1 &amp; 0 &amp; 0 &amp; t_x \\
+  0 &amp; 1 &amp; 0 &amp; t_y \\
+  0 &amp; 0 &amp; 1 &amp; t_z \\
+  0 &amp; 0 &amp; 0 &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>Recall example 2 from the WebGL lesson:  in the vertex shader we
+had to put the vertex in <em>homogeneous coordinates</em> before
+assigning its <code>position</code> to <code>gl_Position</code>.  We added a fourth
+value of <code>1.0</code>, because of the way homogeneous coordinates are
+defined: $(x, y, z, w)$, in homogeneous coordinates, is equivalent
+to $(\frac{x}{w}, \frac{y}{w}, \frac{z}{w})$ in standard
+coordinates.  So the extra $1$ at the end of each vertex in the
+equation above doesn&rsquo;t change the vertex&rsquo;s position.</p>
+
+<p>What it does, however, is give us a way to add the same
+value&mdash;whatever we put in $t_x$&mdash;to the $x$ coordinate of every
+vertex:</p>
+
+<blockquote>
+<p>$x&rsquo; = 1 \times x + 0 \times y + 0 \times z + t_x \times 1$<br/>
+  $x&rsquo; = x + t_x$</p>
+</blockquote>
+
+<p>We can likewise use $t_y$ to translate in the $y$ direction or
+$t_z$ to translate in the $z$ direction.</p>
+
+<p>Here&rsquo;s what the scaling transformation looks like if we use
+homogeneous coordinates:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; \\
+  y&rsquo; \\
+  z&rsquo; \\
+  1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; 0 \\
+  0   &amp; s_y &amp; 0   &amp; 0 \\
+  0   &amp; 0   &amp; s_z &amp; 0 \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>Notice that the terms we used for $t_x$, $t_y$ and $t_z$ are all
+$0$.  This should make sense, because the scaling transformation
+isn&rsquo;t supposed to add anything to $x$, $y$ and $z$; it&rsquo;s supposed
+to multiply them by $s_x$, $s_y$ and $s_z$.  But what if we put
+something in the translation terms?  Could we use the same matrix
+to scale <em>and</em> translate?  Yes:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; \\
+  y&rsquo; \\
+  z&rsquo; \\
+  1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; t_x \\
+  0   &amp; s_y &amp; 0   &amp; t_y \\
+  0   &amp; 0   &amp; s_z &amp; t_z \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>What exactly does this mean?  We can write it as three equations to
+make it clearer:</p>
+
+<blockquote>
+<p>$x&rsquo; = s_x x + t_x$<br/>
+  $y&rsquo; = s_y y + t_y$<br/>
+  $z&rsquo; = s_z z + t_z$</p>
+</blockquote>
+
+<p>This is starting to look like our vertex shader code from examples
+3 and 4 in the previous lesson.  Which one, though?  They didn&rsquo;t
+do the same thing.  It
+turns out this is like example 3, where the translation amount was
+in the original coordinate system rather than the scaled coordinate
+system.  A transformation
+like the one in example 4 would look like this:</p>
+
+<blockquote>
+<p>$x&rsquo; = s_x x + s_x t_x$<br/>
+  $y&rsquo; = s_y y + s_y t_y$<br/>
+  $z&rsquo; = s_z z + s_z t_z$</p>
+</blockquote>
+
+<p>Or, as a matrix multiplication:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; \\
+  y&rsquo; \\
+  z&rsquo; \\
+  1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; s_x t_x \\
+  0   &amp; s_y &amp; 0   &amp; s_y t_y \\
+  0   &amp; 0   &amp; s_z &amp; s_z t_z \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>What&rsquo;s going on here?  The first <em>composite transformation</em> matrix
+represents scaling first, and then translating; the second
+represents translating first, then scaling.  (Recall the vertex
+shader code from examples 3 and 4.)  To show this, we need to
+know how to multiply one square matrix times another, so we&rsquo;ll start
+with that.</p>
+
+<p>Here&rsquo;s how multiplication is defined for 2x2 matrices:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  a_{11} &amp; a_{12} \\
+  a_{21} &amp; a_{22}
+  \end{bmatrix}
+  \begin{bmatrix}
+  b_{11} &amp; b_{12} \\
+  b_{21} &amp; b_{22}
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  (a_{11}b_{11} + a_{12}b_{21}) &amp; (a_{11}b_{12} + a_{12}b_{22}) \\
+  (a_{21}b_{11} + a_{22}b_{21}) &amp; (a_{21}b_{12} + a_{22}b_{22})
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>Notice that, for a term in the product matrix, row terms from
+the first matrix are multiplied by column terms from the second.
+In general, the product matrix term $p_{ij}$ is equal to the
+sum produced by multiplying the row$_i$ terms from the first
+matrix by the column$_j$ terms from the second, and then adding
+the resulting values together.  This is true for any size
+square matrices, including the 4x4 transformation matrices
+we&rsquo;re interested in.  Let&rsquo;s work through an example
+using the scaling matrix as the first matrix and the translation
+matrix as the second:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; 0 \\
+  0   &amp; s_y &amp; 0   &amp; 0 \\
+  0   &amp; 0   &amp; s_z &amp; 0 \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  1 &amp; 0 &amp; 0 &amp; t_x \\
+  0 &amp; 1 &amp; 0 &amp; t_y \\
+  0 &amp; 0 &amp; 1 &amp; t_z \\
+  0 &amp; 0 &amp; 0 &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>To get the first term of the product, we need to multiply the
+terms from the first row of the scaling matrix by the terms from
+the first column of the translation matrix, and then sum the
+results together:</p>
+
+<blockquote>
+<p>$p_{11} = s_x \times 1 + 0 \times 0 + 0 \times 0 + 0 \times 0$<br/>
+  $p_{11} = s_x$</p>
+</blockquote>
+
+<p>$p_{11}$ is in the &ldquo;how much to scale $x$&rdquo; position.  This value
+stays equal to $s_x$, which means the composite transformation
+matrix will scale by the same amount as the scaling matrix, i.e.,
+so far so good.  What about $p_{12}$?</p>
+
+<blockquote>
+<p>$p_{12} = s_x \times 0 + 0 \times 1 + 0 \times 0 + 0 \times 0$<br/>
+  $p_{12} = 0$</p>
+</blockquote>
+
+<p>Good.  We didn&rsquo;t want anything in the composite matrix to make
+$x&rsquo;$ depend on $y$.  What about the first translation term, in
+the upper right corner of the composite matrix?</p>
+
+<blockquote>
+<p>$p_{14} = s_x t_x + 0 \times t_y + 0 \times t_z + 0 \times 1$<br/>
+  $p_{14} = s_x t_x$</p>
+</blockquote>
+
+<p>Aha!  The translation amount is multiplied by the scale factor.
+Could it be that our composite matrix represents the
+&ldquo;translate first, then scale&rdquo; transformation used in example 4?
+Yes.  Here&rsquo;s what you get if you work through all the terms:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; s_x t_x \\
+  0   &amp; s_y &amp; 0   &amp; s_y t_y \\
+  0   &amp; 0   &amp; s_z &amp; s_z t_z \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>So, to get the &ldquo;translate first, then scale&rdquo; composite
+transformation, you multiply the scaling matrix times the
+translation matrix, as shown above.  What if you were to multiply
+the translation matrix times the scaling matrix, as shown here?</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  1 &amp; 0 &amp; 0 &amp; t_x \\
+  0 &amp; 1 &amp; 0 &amp; t_y \\
+  0 &amp; 0 &amp; 1 &amp; t_z \\
+  0 &amp; 0 &amp; 0 &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; 0 \\
+  0   &amp; s_y &amp; 0   &amp; 0 \\
+  0   &amp; 0   &amp; s_z &amp; 0 \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>What will we get for the product&rsquo;s first scaling term, $p_{11}$?
+What about the first translation term, $p_{14}$?</p>
+
+<blockquote>
+<p>$p_{11} = 1 \times s_x + 0 \times 0 + 0 \times 0 + 0 \times 0$<br/>
+  $p_{11} = s_x$</p>
+
+<p>$p_{14} = 1 \times 0 + 0 \times 0 + 0 \times 0 + t_x \times 1$<br/>
+  $p_{14} = t_x$</p>
+</blockquote>
+
+<p>This is just what we&rsquo;d expect, if the product represents the
+&ldquo;scale first, then translate&rdquo; transformation used in example 3.
+And it turns out that it does:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; t_x \\
+  0   &amp; s_y &amp; 0   &amp; t_y \\
+  0   &amp; 0   &amp; s_z &amp; t_z \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>These examples show that we can create matrices representing
+composite transformations by multiplying matrices representing
+simpler transformations (scale, or translate) together.  They
+also show that matrix multiplication is <em>not</em> commutative; that
+is, for matrices $A$ and $B$ (with dimensions such that
+multiplication is possible), $AB \ne BA$.</p>
+
+<p><em><strong><span class="exercise_label">Exercise </span></strong></em>  <em>Examples 3 and 4, in the previous lesson, show visually that
+    the order of
+    transformations is significant, but you can work it out by
+    hand to see the difference more clearly.</em></p>
+
+<ul>
+<li>  <em>Pick one of the vertices of the square.  Find the
+$x$, $y$ and $z$ values for that vertex defined in the
+JavaScript part of the program.</em></li>
+<li>  <em>Work through (on paper and / or with a calculator) the
+transformations
+applied to that vertex in the vertex shader from example
+3 (Squares in Different Places), first for the orange
+square and then for the blue.</em></li>
+<li>  <em>Then work through the transformations applied to that
+vertex in the vertex shader from example 4 (Squares in
+Different Different Places).</em></li>
+</ul>
+
+<p><em>You should see that the $x$ values for the vertex you chose
+are indeed different depending on which version of the vertex
+shader is used.</em></p>
+
+<p><em><strong><span class="exercise_label">Exercise </span></strong></em>  <em>Show that the following is true&hellip;</em></p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; 0 \\
+  0   &amp; s_y &amp; 0   &amp; 0 \\
+  0   &amp; 0   &amp; s_z &amp; 0 \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  1 &amp; 0 &amp; 0 &amp; t_x \\
+  0 &amp; 1 &amp; 0 &amp; t_y \\
+  0 &amp; 0 &amp; 1 &amp; t_z \\
+  0 &amp; 0 &amp; 0 &amp; 1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  s_x &amp; 0   &amp; 0   &amp; s_x t_x \\
+  0   &amp; s_y &amp; 0   &amp; s_y t_y \\
+  0   &amp; 0   &amp; s_z &amp; s_z t_z \\
+  0   &amp; 0   &amp; 0   &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p><em>&hellip;by working through each term in the product matrix.  (Terms
+$p_{11}$, $p_{12}$ and $p_{14}$ were done for you in the
+explanation above.)</em></p>
+
+<p><em>Each term of the product matrix can be described in terms of its
+effect on a vertex.  For example, the upper left term, $p_{11}$,
+is in the &ldquo;how much to scale x&rdquo; position.  See how many of the
+terms you can describe in this way, based on what you&rsquo;ve learned
+so far.  (You should be able to describe at least six.)</em></p>
+
+<p><em><strong><span class="exercise_label">Exercise </span></strong></em>  <em>Repeat exercise 1, but use matrices to represent the
+    transformations&hellip;</em></p>
+
+<ul>
+<li>  <em>Again, pick a vertex (but not the same one you picked for
+exercise 1).  Find its $x$, $y$ and $z$ values in the
+JavaScript part of the program.</em></li>
+<li>  <em>Write the transformations you see in the vertex shader code
+for example 3 (Squares in Different Places) as 4x4 matrices.</em></li>
+<li>  <em>Work through the matrix multiplications
+required to get from the original vertex&rsquo;s $x$, $y$ and $z$
+to the values eventually assigned to <code>gl_Position</code> in the
+vertex shader.  Do this for the orange square&rsquo;s <code>scaleFactor</code>
+and <code>xTranslation</code> values, and then for the blue square&rsquo;s
+<code>scaleFactor</code> and <code>xTranslation</code> values.</em></li>
+<li>  <em>Repeat the process for the vertex shader code for example
+4 (Squares in Different Different Places).</em></li>
+</ul>
+
+<p><em>Again, you should see that the $x$ values for the vertex you
+chose are indeed different depending on which version of the
+vertex shader you used.</em></p>
+
+<h2>Example 1: Example 3 (from previous lesson) with Matrices</h2>
+
+<p>In the previous section, vertices were represented by matrices
+with a single column, and <em>post-multiplication</em> was used to
+apply a transformation represented by a matrix.  Alternatively,
+you can use <em>pre-multiplication</em> if vertices are represented
+by matrices with a single row:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+  x&rsquo; &amp; y&rsquo; &amp; z&rsquo; &amp; 1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  x &amp; y &amp; z &amp; 1
+  \end{bmatrix}
+  \begin{bmatrix}
+  1   &amp; 0   &amp; 0   &amp; 0 \\
+  0   &amp; 1   &amp; 0   &amp; 0 \\
+  0   &amp; 0   &amp; 1   &amp; 0 \\
+  t_x &amp; t_y &amp; t_z &amp; 1
+  \end{bmatrix}$</p>
+</blockquote>
+
+<p>For pre-multiplication, what&rsquo;s shown here, the vertex comes first,
+in contrast to examples of post-multiplcation in the previous
+section, where the transformation matrix came first.  Also notice
+that the transformation matrix has been <em>transposed</em>&mdash;what used to
+be rows have become columns.  It turns out that we have a choice: we
+can either post-multiply, as we did in the previous section, or we
+can transpose transformation matrices and then pre-multiply.  Why
+would we ever choose the second option?  It has to do with the
+way arrays representing matrices are interpreted in the vertex
+shader&hellip;</p>
+
+<p>Given an array representing a matrix, there are two ways to
+interpret it:  <em>row-major order</em> and <em>column-major order</em>.  Here&rsquo;s a
+matrix:</p>
+
+<blockquote>
+<p>$\begin{bmatrix}
+   1 &amp; 0 &amp; 0 &amp; t_x \\
+   0 &amp; 1 &amp; 0 &amp; t_y \\
+   0 &amp; 0 &amp; 1 &amp; t_z \\
+   0 &amp; 0 &amp; 0 &amp; 1
+   \end{bmatrix}$</p>
+</blockquote>
+
+<p>Here&rsquo;s how you would code it as an array, if the language used
+row-major order:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">tMatrix</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">tx</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">ty</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">tz</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">];</span>
+</code></pre></div>
+<p>And here&rsquo;s how you would have to code it if the language used
+column-major order:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">tMatrix</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>
+            <span class="nx">tx</span><span class="p">,</span> <span class="nx">ty</span><span class="p">,</span> <span class="nx">tz</span><span class="p">,</span> <span class="mi">1</span> <span class="p">];</span>
+</code></pre></div>
+<p>It looks as if you&rsquo;ve transposed the matrix.  But technically
+it&rsquo;s not transposed; a column-major language would interpret the
+in a way that would make it represent the original translation
+matrix above.  If you put the row-major version in a column-major
+language, it would be interpreted as the transpose of the original.
+(Similarly, if you put the column-major version in a program written
+in a language using
+row-major interpretation, it would be interpreted as the
+transpose of the original.)  So it&rsquo;s not just what the code looks
+like that determines whether it&rsquo;s the transpose, it also depends
+on how the code is interpreted.</p>
+
+<p>The OpenGL Shading Language (GLSL) interprets arrays representing
+matrices as if they have been written in column-major order.  So
+we can either write the code for our matrices in the normal way,
+and then pre-multiply, since the array in our code will be
+interpreted to represent the transpose of the transformation
+matrix, or we can write the code so that it looks like the
+transpose and post-multiply.  For this example we&rsquo;ll use the
+first option.  The transformation matrices in our JavaScript
+code will look normal, but we&rsquo;ll pre-multiply in the vertex
+shader because we know our matrices will be interpreted as
+having been transposed.</p>
+
+<p>Here&rsquo;s the vertex shader, square.vert:</p>
+<div class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="k">attribute</span> <span class="k">vec3</span> <span class="n">position</span><span class="p">;</span>
+<span class="k">uniform</span> <span class="k">mat4</span> <span class="n">transform</span><span class="p">;</span>
+
+<span class="k">void</span> <span class="n">main</span><span class="p">(</span><span class="k">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">gl_Position</span> <span class="o">=</span> <span class="k">vec4</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">transform</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>uniform</code> variable <code>transform</code> is a 4x4 transformation matrix
+given in row-major order.  As explained above, it will be
+interpreted as the column-major transpose of the transformation
+matrix we&rsquo;re interested in, so when calculating <code>gl_Position</code>
+we pre-multiply; that is, we put the vertex first.  Note that
+the multiplication operation we need&mdash;multiply a 4-value vector
+and a 4x4 matrix&mdash;is built in to GLSL.  Also, the vector is
+automatically treated as a single row or as a single column
+depending on which is needed to make the multiplication valid.</p>
+
+<p>Suppose the functions listed below have been added to the
+JavaScript file, square.js.  (Source code isn&rsquo;t included, since the
+implementation of these functions is one of the exercises at the
+end of this lesson.)</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Returns an array representing a 4x4 identity matrix.</span>
+<span class="nx">identityMatrix</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+             <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+             <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+             <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">];</span>
+<span class="p">};</span>
+
+<span class="c1">// a - A 4x4 transformation matrix.</span>
+<span class="c1">// b - A 4x4 transformation matrix.</span>
+<span class="c1">// Returns the product matrix a * b.</span>
+<span class="nx">multiply</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Exercise 4...</span>
+<span class="p">};</span>
+
+<span class="c1">// m - A 4x4 transformation matrix.</span>
+<span class="c1">// sx, sy, sz - x, y and z scale factors.</span>
+<span class="c1">// Returns the composite transformation produced by starting</span>
+<span class="c1">// with m and then scaling by sx, sy and sz.</span>
+<span class="nx">scale</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">m</span><span class="p">,</span> <span class="nx">sx</span><span class="p">,</span> <span class="nx">sy</span><span class="p">,</span> <span class="nx">sz</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Exercise 4...</span>
+<span class="p">};</span>
+
+<span class="c1">// m - A 4x4 transformation matrix.</span>
+<span class="c1">// tx, ty, tz - x, y and z translation amounts.</span>
+<span class="c1">// Returns the composite transformation produced by starting</span>
+<span class="c1">// with m and then translating by tx, ty and tz.</span>
+<span class="nx">translate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">m</span><span class="p">,</span> <span class="nx">tx</span><span class="p">,</span> <span class="nx">ty</span><span class="p">,</span> <span class="nx">tz</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Exercise 4...</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>Here&rsquo;s the code in <code>main</code> that would use these functions.  (As with
+previous examples, this code would go after the code that sets up
+the connection between the vertex data and the vertex shader
+<code>attribute</code> variable <code>position</code>.)</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Get references to shaders&#39; uniform variables.</span>
+<span class="nx">transformUniform</span> <span class="o">=</span> <span class="nx">gl</span><span class="p">.</span><span class="nx">getUniformLocation</span><span class="p">(</span><span class="nx">shaderProgram</span><span class="p">,</span>
+        <span class="s2">&quot;transform&quot;</span><span class="p">);</span>
+<span class="nx">colorUniform</span> <span class="o">=</span> <span class="nx">gl</span><span class="p">.</span><span class="nx">getUniformLocation</span><span class="p">(</span><span class="nx">shaderProgram</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">);</span>
+
+<span class="c1">// Set up for drawing from vertex buffer.</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">vertexAttribPointer</span><span class="p">(</span><span class="nx">vertexPositionAttribute</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">gl</span><span class="p">.</span><span class="nx">FLOAT</span><span class="p">,</span>
+        <span class="kc">false</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Clear the canvas.</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">clearColor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="nx">gl</span><span class="p">.</span><span class="nx">COLOR_BUFFER_BIT</span><span class="p">);</span>
+
+<span class="c1">// Start with an identity matrix (transformation that doesn&#39;t</span>
+<span class="c1">// change a vertex coordinates at all).</span>
+<span class="nx">transform</span> <span class="o">=</span> <span class="nx">identityMatrix</span><span class="p">();</span>
+
+<span class="c1">// Scale x values to fix aspect ratio.</span>
+<span class="nx">transform</span> <span class="o">=</span> <span class="nx">scale</span><span class="p">(</span><span class="nx">transform</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+
+<span class="c1">// Translate x values to move square left.</span>
+<span class="nx">orangeSquareTransform</span> <span class="o">=</span> <span class="nx">translate</span><span class="p">(</span><span class="nx">transform</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+
+<span class="c1">// Scale to make the square bigger.</span>
+<span class="nx">orangeSquareTransform</span> <span class="o">=</span> <span class="nx">scale</span><span class="p">(</span><span class="nx">orangeSquareTransform</span><span class="p">,</span>
+        <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">);</span>
+
+<span class="c1">// Copy orangeSquareTransform to vertex shader uniform</span>
+<span class="c1">// variable &quot;transform&quot;; draw orange square.</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">uniformMatrix4fv</span><span class="p">(</span><span class="nx">transformUniform</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="k">new</span> <span class="nx">Float32Array</span><span class="p">(</span><span class="nx">orangeSquareTransform</span><span class="p">));</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">uniform3f</span><span class="p">(</span><span class="nx">colorUniform</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">drawArrays</span><span class="p">(</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLE_STRIP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+<span class="c1">// Copy transform (transformation matrix with only the scale</span>
+<span class="c1">// to fix the aspect ratio) to vertex shader uniform variable</span>
+<span class="c1">// &quot;transform&quot;; draw yellow square.</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">uniformMatrix4fv</span><span class="p">(</span><span class="nx">transformUniform</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="k">new</span> <span class="nx">Float32Array</span><span class="p">(</span><span class="nx">transform</span><span class="p">));</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">uniform3f</span><span class="p">(</span><span class="nx">colorUniform</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">drawArrays</span><span class="p">(</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLE_STRIP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+<span class="c1">// Translate to move square right, make it smaller, copy</span>
+<span class="c1">// transformation matrix to vertex shader, draw blue square.</span>
+<span class="nx">blueSquareTransform</span> <span class="o">=</span> <span class="nx">translate</span><span class="p">(</span><span class="nx">transform</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+<span class="nx">blueSquareTransform</span> <span class="o">=</span> <span class="nx">scale</span><span class="p">(</span><span class="nx">blueSquareTransform</span><span class="p">,</span>
+        <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">);</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">uniformMatrix4fv</span><span class="p">(</span><span class="nx">transformUniform</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="k">new</span> <span class="nx">Float32Array</span><span class="p">(</span><span class="nx">blueSquareTransform</span><span class="p">));</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">uniform3f</span><span class="p">(</span><span class="nx">colorUniform</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">);</span>
+<span class="nx">gl</span><span class="p">.</span><span class="nx">drawArrays</span><span class="p">(</span><span class="nx">gl</span><span class="p">.</span><span class="nx">TRIANGLE_STRIP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</code></pre></div>
+<p>As you might guess from the title of this section, the image
+generated by this code should match example 3 from the previous
+lesson.</p>
+
+<p><em><strong><span class="exercise_label">Exercise </span></strong></em>  <em>Implement the <code>multiply</code>, <code>scale</code>,
+    and <code>translate</code> functions listed above so that
+    you have a working program for example 1 (from this lesson).</em></p>
+
+<p><em>To help you test your functions, here&rsquo;s a function that
+prints a 16-element JavaScript array in the browser console.</em></p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// m - A 4x4 transformation matrix.</span>
+<span class="c1">// d - Number of digits after the decimal point that should</span>
+<span class="c1">//     be used when printing values from the matrix.</span>
+<span class="c1">// Prints matrix to browser console.  (For testing.)</span>
+<span class="nx">printMatrix</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">m</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">4</span><span class="p">].</span><span class="nx">toFixed</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span>
+                <span class="nx">m</span><span class="p">[</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">].</span><span class="nx">toFixed</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span>
+                <span class="nx">m</span><span class="p">[</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span><span class="p">].</span><span class="nx">toFixed</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span>
+                <span class="nx">m</span><span class="p">[</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">3</span><span class="p">].</span><span class="nx">toFixed</span><span class="p">(</span><span class="nx">d</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+<p><em><strong><span class="exercise_label">Exercise </span></strong></em>  <em>Rewrite the code for example 1 (from this lesson) so that&hellip;</em></p>
+
+<ul>
+<li>  <em>In the JavaScript part of the program, transformation
+matrix arrays look like they&rsquo;ve been transposed.</em></li>
+<li>  <em>The vertex shader uses post-multiplication rather than
+pre-multiplication when multiplying a transformation
+matrix and a vertex.</em></li>
+</ul>
+
+<p><em>The image produced by your program should match what&rsquo;s
+produced by your solution to the previous exercise.</em></p>
+
+<p><em><strong><span class="exercise_label">Exercise </span></strong></em>  <em>Based on what you&rsquo;ve learned so far, write
+    a WebGL program that generates an image like the side view of
+    a Rubik&rsquo;s Cube.</em></p>
+
+<ul>
+<li>  <em>Your program should define vertex data for the four
+corners of just one square, like the examples above.</em></li>
+<li>  <em>It should redraw that same square, in different colors,
+sizes and positions, to generate the image.</em></li>
+<li>  <em>You will probably want to use the transformation matrix
+functions you wrote for exercise 4, but this is not
+required.</em></li>
+</ul>
+
+<p><em>Figure 5.1 shows a possible solution.</em></p>
+
+<figure style="width:300px">
+<canvas id="canvas_5_1" width=300 height=300></canvas>
+<figcaption><strong>Figure 5.1:</strong> Rubik&rsquo;s Cube Side View</figcaption>
+</figure>
+
+<script src="tf/5_1/side.js"></script>
+
+<!-- ![__Figure 5.1:__ Rubik's Cube Side View](tf/5_1/screenshot.png) -->
+
+        </div>
+    </body>
+</html>

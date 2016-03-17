@@ -1,0 +1,60 @@
+@import url(http://fonts.googleapis.com/css?family=Merriweather:300,300italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,400italic,700,700italic);
+
+body {
+  font-family: "Merriweather";
+  font-size: 95%;
+  line-height: 150%;
+  background-color: rgb(250, 245, 220);
+  margin: 0px;
+}
+
+.content {
+  max-width: 700px;
+  margin: auto;
+}
+
+h1 {
+  margin-top: 50px;
+}
+
+h2 {
+  margin-top: 30px;
+}
+
+pre, code {
+  font-family: "Source Code Pro";
+  font-size: 90%;
+  line-height: normal;
+  background-color: white;
+  border: 1px solid rgb(230, 220, 190);
+  border-radius: 4px;
+}
+
+pre {
+  padding: 4px;
+  padding-left: 6px;
+  margin-bottom: 20px;
+}
+
+code {
+  padding: 1px 4px 1px 4px;
+  margin: -1px;
+}
+
+em code {
+  padding: 1px 6px 1px 2px;
+}
+
+pre code {
+  font-size: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+figure {
+  margin-left: auto;
+  margin-right: auto;
+}
