@@ -3,12 +3,15 @@ layout: default
 no_math: true
 title: JavaScript (Part 1)
 lesson: 1
+summary: This lesson, along with the next one, is meant to teach
+    you how to use JavaScript effectively, assuming you've learned
+    basic object-oriented programming in a language like Java.
 ---
 
 # JavaScript (Part 1)
 
 These first lessons are meant to teach you (at least one
-way) to use Javascript effectively, assuming you have learned basic
+way) to use JavaScript effectively, assuming you have learned basic
 object-oriented programming in a language like Java.  Most of
 the ideas here come from *JavaScript Patterns*, by Stoyan
 Stefanov, and *JavaScript: The Good Parts*, by Douglas Crockford.

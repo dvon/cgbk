@@ -55,6 +55,10 @@ pre code {
   margin: 0px;
 }
 
+.summary {
+  margin: -10px 0px 15px 30px;
+}
+
 figure {
   text-align: center;
 }
