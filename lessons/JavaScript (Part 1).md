@@ -101,7 +101,7 @@ while (player.score < 100) {
 console.log(player.score + " points in " + turnCount + " turns.");
 ~~~
 
-@. *Enter the code above, saved in "pig.html" and "pig.js," in
+Exercise #: *Enter the code above, saved in "pig.html" and "pig.js," in
 the same folder.  Open "pig.html" in a web browser.  In Chrome,
 you will be able to see the output if you choose
 "More Tools...Developer Tools...Console,"
@@ -188,7 +188,7 @@ updates the second player's `player` object's `score` field
 rather than that of the first player, so the second player
 gets whatever points should have been given to the first.
 
-@. *Write a modified version of the code above, with `var`
+*Exercise #: Write a modified version of the code above, with `var`
 taken out and additional `console.log` statements added, to
 clearly show the error explained in the previous paragraph.*
 
@@ -312,14 +312,14 @@ PigPlayer = function (holdAmount) {
 };
 ~~~
 
-@. *Write a modified version of the Pig game code above, without the
+*Exercise #: Write a modified version of the Pig game code above, without the
 check for `new`, with "`return this;`" at the end of the
 constructor, and without `new` in the statements that create new
 `PigPlayer` objects.  Add output statements to show that now the
 two players both get each other's points, so that they always
 tie.*
 
-@. *In this example, if the earlier version of the constructor
+*Exercise #: In this example, if the earlier version of the constructor
 without the check for `new` is called without `new`, you end up
 getting an error message because the constructor returns
 `undefined`.  Describe a situation where a missing `new`, and

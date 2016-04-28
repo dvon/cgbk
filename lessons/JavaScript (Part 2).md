@@ -117,7 +117,7 @@ idea further in the next section, considering how we can create
 variables and functions that act like private or public members
 of an object, and also static vs. instance members.
 
-@.  *Write a function (or more than one) to read multiple files
+*Exercise #: Write a function (or more than one) to read multiple files
 concurrently.  It should create `XMLHttpRequest` objects and
 call `send` for all the files, not waiting for one to finish
 loading before sending the request for another.  In addition,
@@ -481,11 +481,11 @@ public instance fields.  Instead, you could just use a variable
 declared in such a way that its scope contains all
 instances.
 
-@.  *Why is it that `setNumDice` isn't defined at the beginning
+*Exercise #: Why is it that `setNumDice` isn't defined at the beginning
 with private static members?  Or what if `setNumDice` were
 defined inside `PigPlayer`?  What difference would that make?*
 
-@.  _Translate the following Java class into a JavaScript function,
+_Exercise #: Translate the following Java class into a JavaScript function,
 following the pattern of the final version of `PigPlayer`
 above:  use `ps` for any private static members, `pb` for
 any public instance members, and `pv` for any private instance

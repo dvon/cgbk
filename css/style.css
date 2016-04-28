@@ -12,6 +12,7 @@ body {
 .content {
   max-width: 700px;
   margin: auto;
+  padding: 15px;
 }
 
 h1 {
@@ -20,6 +21,11 @@ h1 {
 
 h2 {
   margin-top: 30px;
+}
+
+img, canvas {
+  border: 1px solid rgb(230, 220, 190);
+  border-radius: 4px;
 }
 
 pre, code {
@@ -55,6 +61,37 @@ pre code {
 }
 
 figure {
-  margin-left: auto;
-  margin-right: auto;
+  text-align: center;
+}
+
+figcaption {
+  text-align: center;
+}
+
+.footnote {
+  font-weight: bold;
+  font-size: 110%;
+  padding-left: 1px;
+}
+
+.footnotes {
+  border-top: 1px solid black;
+  counter-reset: li 0;
+}
+
+.footnotes ol {
+  padding-left: 0px;
+}
+
+.footnotes li {
+  list-style: none;
+}
+
+.footnotes li p:first-of-type::before {
+  counter-increment: li;
+  content: counter(li);
+  vertical-align: super;
+  padding-right: 1px;
+  font-weight: bold;
+  font-size: 90%;
 }

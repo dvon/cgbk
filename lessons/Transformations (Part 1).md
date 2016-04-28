@@ -74,9 +74,9 @@ With these changes, our square shows up as a square, even though
 the aspect ratio of the canvas doesn't match that of WebGL's
 canonical view volume (figure 4.1).
 
-<figure style="width:400px">
-    <canvas id="canvas_4_1" width=400 height=300></canvas>
-    <figcaption><strong>Figure 4.1:</strong> A Square Square
+<figure>
+    <canvas id="canvas_4_1" width="400" height="300"></canvas>
+    <figcaption>Figure #: A Square Square
         in a Rectangular Canvas</figcaption>
 </figure>
 <script src="tf/4_1/square.js"></script>
@@ -222,20 +222,20 @@ gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 Figure 4.2 shows the resulting image.
 
-<figure style="width:400px">
-    <canvas id="canvas_4_2" width=400 height=300></canvas>
-    <figcaption><strong>Figure 4.2:</strong> Squares of
+<figure>
+    <canvas id="canvas_4_2" width="400" height="300"></canvas>
+    <figcaption>Figure #: Squares of
         Different Sizes</figcaption>
 </figure>
 <script src="tf/4_2/squares.js"></script>
 
-@.  *Create your own working version of this example.  Then modify
-    it so that the aspect ratio ($\frac{4}{3}$ in this case) is
-    sent from the JavaScript program to the vertex shader as a
-    uniform variable (like `scaleFactor`).  Then modify the
-    calculation in the shader so that $x$ coordinates are multiplied
-    by the reciprocal of the aspect ratio rather than a hard-coded
-    value of `(3.0 / 4.0)`.*
+*Exercise #: Create your own working version of this example.  Then modify
+it so that the aspect ratio ($\frac{4}{3}$ in this case) is
+sent from the JavaScript program to the vertex shader as a
+uniform variable (like `scaleFactor`).  Then modify the
+calculation in the shader so that $x$ coordinates are multiplied
+by the reciprocal of the aspect ratio rather than a hard-coded
+value of `(3.0 / 4.0)`.*
 
 ## Squares in Different Places
 
@@ -317,9 +317,9 @@ gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 Figure 4.3 shows the image after these changes.
 
-<figure style="width:400px">
-    <canvas id="canvas_4_3" width=400 height=300></canvas>
-    <figcaption><strong>Figure 4.3:</strong> Squares in
+<figure>
+    <canvas id="canvas_4_3" width="400" height="300"></canvas>
+    <figcaption>Figure #: Squares in
         Different Places</figcaption>
 </figure>
 <script src="tf/4_3/squares.js"></script>
@@ -363,9 +363,9 @@ void main(void) {
 
 ...we get a different image (figure 4.4).
 
-<figure style="width:400px">
-    <canvas id="canvas_4_4" width=400 height=300></canvas>
-    <figcaption><strong>Figure 4.4:</strong> Squares in
+<figure>
+    <canvas id="canvas_4_4" width="400" height="300"></canvas>
+    <figcaption>Figure #: Squares in
         Different Different Places</figcaption>
 </figure>
 <script src="tf/4_4/squares.js"></script>
@@ -383,8 +383,8 @@ width---`0.5`---in its own coordinate system.  Likewise the blue
 square has been moved `0.5` to the right---`0.5` in the *blue*
 square's coordinate system.
 
-@.  *Create your own variation on the image shown in Figure 4.4
-    (or 4.3, which is very similar).  Experiment with transformations,
-    predicting what will happen (especially when you change the
-    order of the transformations) and checking to see that you
-    understand correctly how they work.*
+*Exercise #: Create your own variation on the image shown in Figure 4.4
+(or 4.3, which is very similar).  Experiment with transformations,
+predicting what will happen (especially when you change the
+order of the transformations) and checking to see that you
+understand correctly how they work.*

@@ -65,10 +65,10 @@ everything happens at once.  We'll walk through this in detail
 with examples, starting from a trivial program that does not
 include shaders.
 
-## A Cleared Canvas [^1]
+## A Cleared Canvas
 
 Your first WebGL program, meant to show how the HTML, CSS and
-JavaScript parts fit together, draws a solid black square.
+JavaScript parts fit together, draws a solid black square.[^1]
 Here's the HTML:
 
 ~~~html
@@ -180,17 +180,16 @@ for each fragment.  There are other buffers, with other
 per-fragment values, which can be cleared if you pass other
 arguments to the `clear` method.
 
-@.  *Put square.html, square.js and style.css in a folder, run a
-    local web server, open square.html in a browser...  Your
-    result should look like what you see in Figure 3.1 below.*
+*Exercise #:  Put square.html, square.js and style.css in a
+folder, run a local web server, open square.html in a browser...
+Your result should look like what you see in Figure 3.1 below.*
 
-<figure style="width:300px">
-<canvas id="canvas_3_1" width=300 height=300></canvas>
-<figcaption><strong>Figure 3.1:</strong> A Cleared Canvas</figcaption>
+<figure>
+<canvas id="canvas_3_1" width="300" height="300"></canvas>
+<figcaption>Figure #: A Cleared Canvas</figcaption>
 </figure>
 <script src="webgl/3_1/webgl.js"></script>
 
-<!-- ![__Figure 3.1:__ A Cleared Canvas](webgl/3_1/screenshot.png) -->
 
 ## A Red Square
 
@@ -463,24 +462,24 @@ were more vertices the third, fourth and fifth would form the
 next triangle, the fourth, fifth and sixth would form the next,
 etc.)
 
-@.  *Put the five files from this example in a folder, open
-    square.html in a web browser...  Figure 3.2 shows what I expect
-    you to see.*
+*Exercise #: Put the five files from this example in a folder, open
+square.html in a web browser...  Figure 3.2 shows what I expect
+you to see.*
 
-<figure style="width:300px">
-<canvas id="canvas_3_2" width=300 height=300></canvas>
-<figcaption><strong>Figure 3.2:</strong> A Red Square</figcaption>
+<figure>
+<canvas id="canvas_3_2" width="300" height="300"></canvas>
+<figcaption>Figure #: A Red Square</figcaption>
 </figure>
 <script src="webgl/3_2/square.js"></script>
 
-@.  *Modify this example so that the canvas size on the page is
-    400x300.  Notice that the square is no longer square.  (It's
-    rectangular.)  Change the values of `vertexData` so that it
-    becomes square again (and is still centered in the canvas).*
+*Exercise #: Modify this example so that the canvas size on the page is
+400x300.  Notice that the square is no longer square.  (It's
+rectangular.)  Change the values of `vertexData` so that it
+becomes square again (and is still centered in the canvas).*
 
-@.  *Modify this example so that it uses the `readFiles` function
-    you wrote for the second JavaScript lesson to load the two
-    shader files concurrently.*
+*Exercise #: Modify this example so that it uses the `readFiles` function
+you wrote for the second JavaScript lesson to load the two
+shader files concurrently.*
 
 ## A More Colorful Square
 
@@ -584,24 +583,24 @@ gl.uniform1f(blueValueUniform, Math.random());
 With these changes, you get the image in Figure 3.3
 (depending on the random value assigned to `blueValue`).
 
-<figure style="width:300px">
-<canvas id="canvas_3_3" width=300 height=300></canvas>
-<figcaption><strong>Figure 3.3:</strong> A More Colorful Square</figcaption>
+<figure>
+<canvas id="canvas_3_3" width="300" height="300"></canvas>
+<figcaption>Figure #: A More Colorful Square</figcaption>
 </figure>
 <script src="webgl/3_3/square.js"></script>
 
-@.  *`gl.TRIANGLE_FAN` is an alternative to `gl.TRIANGLE_STRIP`.
-    With `gl.TRIANGLE_FAN`, all triangles share the first vertex
-    specified:  the first three vertices form the first triangle,
-    the first, third and fourth form the second triangle, the
-    first, fourth and fifth form the third, and so on.  Using
-    `gl.TRIANGLE_FAN`, modify the second example ("A Red Square")
-    so that it draws a yellow octagon.  Make the center of the
-    octagon the first vertex.)*
+*Exercise #: `gl.TRIANGLE_FAN` is an alternative to `gl.TRIANGLE_STRIP`.
+With `gl.TRIANGLE_FAN`, all triangles share the first vertex
+specified:  the first three vertices form the first triangle,
+the first, third and fourth form the second triangle, the
+first, fourth and fifth form the third, and so on.  Using
+`gl.TRIANGLE_FAN`, modify the second example ("A Red Square")
+so that it draws a yellow octagon.  Make the center of the
+octagon the first vertex.)*
 
-@.  *After doing the previous exercise, modify the third example
-    ("A More Colorful Square") so that
-    it draws an octagon with a yellow center, fading to orange
-    at the outside.*
+*Exercise #: After doing the previous exercise, modify the third example
+("A More Colorful Square") so that
+it draws an octagon with a yellow center, fading to orange
+at the outside.*
 
 [^1]: Based on an example from chapter 2 of the *WebGL Programming Guide*, by Kouichi Matsuda and Roger Lea. 

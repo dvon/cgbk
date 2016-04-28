@@ -15,7 +15,7 @@
                 extensions: ["tex2jax.js"],
                 jax: ["input/TeX","output/HTML-CSS"],
                 tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
-                "HTML-CSS": {webFont: "STIX-Web"}
+                "HTML-CSS": {webFont: "STIX-Web" }
             });
         </script>
         <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"
@@ -28,11 +28,15 @@
                 content: "Lesson {{ page.lesson }}: "
             }
             body {
-                counter-reset: lc {{ page.lesson }} ec 0;
+                counter-reset: lc {{ page.lesson }} ec 0 fc 0;
             }
             .exercise_label::after {
                 counter-increment: ec;
-                content: counter(lc) "." counter(ec) ":";
+                content: counter(lc) "." counter(ec);
+            }
+            .figure_label::after {
+                counter-increment: fc;
+                content: counter(lc) "." counter(fc);
             }
         </style>
         {% endif %}
@@ -40,7 +44,7 @@
     </head>
     <body>
         <div class="content">
-            {{ content | replace: '@.', '<em><strong><span class="exercise_label">Exercise </span></strong></em>' | replace: '&ndash;>', '-->' }}
+            {{ content | replace: 'Exercise #', '<em><strong><span class="exercise_label">Exercise </span></strong></em>' | replace: 'Figure #', '<strong><span class="figure_label">Figure </span></strong>' | replace: '&ndash;>', '-->' }}
         </div>
     </body>
 </html>

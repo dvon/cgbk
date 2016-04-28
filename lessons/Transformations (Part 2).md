@@ -19,76 +19,81 @@ the vertex shader code.
 The previous lesson's examples illustrate two possible scaling
 transformations:
 
-1)  Multiply the $x$ coordinate of every vertex by $\frac{3}{4}$
+-   Multiply the $x$ coordinate of every vertex by $\frac{3}{4}$
     (i.e., the reciprocal of the aspect ratio).
 
-2)  Multiply the $x$, $y$ and $z$ coordinates of every vertex by
+-   Multiply the $x$, $y$ and $z$ coordinates of every vertex by
     the same value (`scaleFactor`).
 
 We can define a general 3D scaling transformation that would
 include both:
 
-> Scale a vertex $(x, y, z)$ by factors $(s_x, s_y, s_z)$:
-  $(x', y', z') = (s_x x, s_y y, s_z z)$
+-   Scale a vertex $(x, y, z)$ by factors $(s_x, s_y, s_z)$:
+    $(x', y', z') = (s_x x, s_y y, s_z z)$
 
 This could be written as three equations...
 
-> $x' = s_x x$  
-  $y' = s_y y$  
-  $z' = s_z z$
+$$\begin{aligned}
+x' &= s_x x \\  
+y' &= s_y y \\  
+z' &= s_z z
+\end{aligned}
+$$
 
 ...but it's typically written as one matrix multiplication:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z'
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  s_x & 0   & 0   \\\\\\\\
-  0   & s_y & 0   \\\\\\\\
-  0   & 0   & s_z
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z'
+\end{bmatrix}
+=
+\begin{bmatrix}
+s_x & 0   & 0   \\
+0   & s_y & 0   \\
+0   & 0   & s_z
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix}$$
 
 What does this mean? Well, here's how multiplication would be
 defined for a general 3x3 matrix times a 3x1 matrix representing a
 vertex with $x$, $y$ and $z$ coordinates:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z'
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  m_{11} & m_{12} & m_{13} \\\\\\\\
-  m_{21} & m_{22} & m_{23} \\\\\\\\
-  m_{31} & m_{32} & m_{33}
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  m_{11} x + m_{12} y + m_{13} z \\\\\\\\
-  m_{21} x + m_{22} y + m_{23} z \\\\\\\\
-  m_{31} x + m_{32} y + m_{33} z
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z'
+\end{bmatrix}
+=
+\begin{bmatrix}
+m_{11} & m_{12} & m_{13} \\
+m_{21} & m_{22} & m_{23} \\
+m_{31} & m_{32} & m_{33}
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix}
+=
+\begin{bmatrix}
+m_{11} x + m_{12} y + m_{13} z \\
+m_{21} x + m_{22} y + m_{23} z \\
+m_{31} x + m_{32} y + m_{33} z
+\end{bmatrix}$$
 
 Notice that $m_{11}$ provides a way of making $x'$ depend on
 $x$; it's the term you use if you want $x'$ to be equal to $x$
 times a scaling factor:
 
-> $x' = s_x x + 0 \times y + 0 \times z$  
-  $x' = s_x x$
+$$\begin{aligned}
+x' &= s_x x + 0 \times y + 0 \times z \\
+x' &= s_x x
+\end{aligned}$$
 
 Similarly $m_{22}$ is the term you use
 if you want $y'$ to depend on $y$, and $m_{33}$ is the term you
@@ -97,11 +102,11 @@ use if you want $z'$ to depend on $z$.
 What if $m_{11}$, $m_{22}$
 and $m_{33}$ are all $1$?  We have the *identity matrix*:
 
-> $\begin{bmatrix}
-  1 & 0 & 0 \\\\\\\\
-  0 & 1 & 0 \\\\\\\\
-  0 & 0 & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}$$
 
 This is the matrix which, if you multiply it times a vertex,
 gives you back the same vertex you started with.  We'll come back
@@ -120,25 +125,25 @@ original $x$ values.  A 3x3 matrix won't work.
 
 But a 4x4 will:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  1 & 0 & 0 & t_x \\\\\\\\
-  0 & 1 & 0 & t_y \\\\\\\\
-  0 & 0 & 1 & t_z \\\\\\\\
-  0 & 0 & 0 & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
-  1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}$$
 
 Recall example 2 from the WebGL lesson:  in the vertex shader we
 had to put the vertex in *homogeneous coordinates* before
@@ -153,8 +158,10 @@ What it does, however, is give us a way to add the same
 value---whatever we put in $t_x$---to the $x$ coordinate of every
 vertex:
 
-> $x' = 1 \times x + 0 \times y + 0 \times z + t_x \times 1$  
-  $x' = x + t_x$
+$$\begin{aligned}
+x' &= 1 \times x + 0 \times y + 0 \times z + t_x \times 1 \\
+x' &= x + t_x
+\end{aligned}$$
 
 We can likewise use $t_y$ to translate in the $y$ direction or
 $t_z$ to translate in the $z$ direction.
@@ -162,25 +169,25 @@ $t_z$ to translate in the $z$ direction.
 Here's what the scaling transformation looks like if we use
 homogeneous coordinates:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  s_x & 0   & 0   & 0 \\\\\\\\
-  0   & s_y & 0   & 0 \\\\\\\\
-  0   & 0   & s_z & 0 \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
-  1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+s_x & 0   & 0   & 0 \\
+0   & s_y & 0   & 0 \\
+0   & 0   & s_z & 0 \\
+0   & 0   & 0   & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}$$
 
 Notice that the terms we used for $t_x$, $t_y$ and $t_z$ are all
 $0$.  This should make sense, because the scaling transformation
@@ -189,32 +196,34 @@ to multiply them by $s_x$, $s_y$ and $s_z$.  But what if we put
 something in the translation terms?  Could we use the same matrix
 to scale *and* translate?  Yes:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  s_x & 0   & 0   & t_x \\\\\\\\
-  0   & s_y & 0   & t_y \\\\\\\\
-  0   & 0   & s_z & t_z \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
-  1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+s_x & 0   & 0   & t_x \\
+0   & s_y & 0   & t_y \\
+0   & 0   & s_z & t_z \\
+0   & 0   & 0   & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}$$
 
 What exactly does this mean?  We can write it as three equations to
 make it clearer:
 
-> $x' = s_x x + t_x$  
-  $y' = s_y y + t_y$  
-  $z' = s_z z + t_z$
+$$\begin{aligned}
+x' &= s_x x + t_x \\  
+y' &= s_y y + t_y \\  
+z' &= s_z z + t_z
+\end{aligned}$$
 
 This is starting to look like our vertex shader code from examples
 3 and 4 in the previous lesson.  Which one, though?  They didn't
@@ -224,31 +233,33 @@ in the original coordinate system rather than the scaled coordinate
 system.  A transformation
 like the one in example 4 would look like this:
 
-> $x' = s_x x + s_x t_x$  
-  $y' = s_y y + s_y t_y$  
-  $z' = s_z z + s_z t_z$
+$$\begin{aligned}
+x' &= s_x x + s_x t_x \\
+y' &= s_y y + s_y t_y \\
+z' &= s_z z + s_z t_z
+\end{aligned}$$
 
 Or, as a matrix multiplication:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  s_x & 0   & 0   & s_x t_x \\\\\\\\
-  0   & s_y & 0   & s_y t_y \\\\\\\\
-  0   & 0   & s_z & s_z t_z \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
-  1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+s_x & 0   & 0   & s_x t_x \\
+0   & s_y & 0   & s_y t_y \\
+0   & 0   & s_z & s_z t_z \\
+0   & 0   & 0   & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}$$
 
 What's going on here?  The first *composite transformation* matrix
 represents scaling first, and then translating; the second
@@ -259,19 +270,19 @@ with that.
 
 Here's how multiplication is defined for 2x2 matrices:
 
-> $\begin{bmatrix}
-  a_{11} & a_{12} \\\\\\\\
-  a_{21} & a_{22}
-  \end{bmatrix}
-  \begin{bmatrix}
-  b_{11} & b_{12} \\\\\\\\
-  b_{21} & b_{22}
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  (a_{11}b_{11} + a_{12}b_{21}) & (a_{11}b_{12} + a_{12}b_{22}) \\\\\\\\
-  (a_{21}b_{11} + a_{22}b_{21}) & (a_{21}b_{12} + a_{22}b_{22})
-  \end{bmatrix}$
+$$\begin{bmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22}
+\end{bmatrix}
+\begin{bmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}
+\end{bmatrix}
+=
+\begin{bmatrix}
+(a_{11}b_{11} + a_{12}b_{21}) & (a_{11}b_{12} + a_{12}b_{22}) \\
+(a_{21}b_{11} + a_{22}b_{21}) & (a_{21}b_{12} + a_{22}b_{22})
+\end{bmatrix}$$
 
 Notice that, for a term in the product matrix, row terms from
 the first matrix are multiplied by column terms from the second.
@@ -284,91 +295,101 @@ we're interested in.  Let's work through an example
 using the scaling matrix as the first matrix and the translation
 matrix as the second:
 
-> $\begin{bmatrix}
-  s_x & 0   & 0   & 0 \\\\\\\\
-  0   & s_y & 0   & 0 \\\\\\\\
-  0   & 0   & s_z & 0 \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  1 & 0 & 0 & t_x \\\\\\\\
-  0 & 1 & 0 & t_y \\\\\\\\
-  0 & 0 & 1 & t_z \\\\\\\\
-  0 & 0 & 0 & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+s_x & 0   & 0   & 0 \\
+0   & s_y & 0   & 0 \\
+0   & 0   & s_z & 0 \\
+0   & 0   & 0   & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}$$
 
 To get the first term of the product, we need to multiply the
 terms from the first row of the scaling matrix by the terms from
 the first column of the translation matrix, and then sum the
 results together:
 
-> $p_{11} = s_x \times 1 + 0 \times 0 + 0 \times 0 + 0 \times 0$  
-  $p_{11} = s_x$
+$$\begin{aligned}
+p_{11} &= s_x \times 1 + 0 \times 0 + 0 \times 0 + 0 \times 0 \\
+p_{11} &= s_x
+\end{aligned}$$
 
 $p_{11}$ is in the "how much to scale $x$" position.  This value
 stays equal to $s_x$, which means the composite transformation
 matrix will scale by the same amount as the scaling matrix, i.e.,
 so far so good.  What about $p_{12}$?
 
-> $p_{12} = s_x \times 0 + 0 \times 1 + 0 \times 0 + 0 \times 0$  
-  $p_{12} = 0$
+$$\begin{aligned}
+p_{12} &= s_x \times 0 + 0 \times 1 + 0 \times 0 + 0 \times 0 \\
+p_{12} &= 0
+\end{aligned}$$
 
 Good.  We didn't want anything in the composite matrix to make
 $x'$ depend on $y$.  What about the first translation term, in
 the upper right corner of the composite matrix?
 
-> $p_{14} = s_x t_x + 0 \times t_y + 0 \times t_z + 0 \times 1$  
-  $p_{14} = s_x t_x$
+$$\begin{aligned}
+p_{14} &= s_x t_x + 0 \times t_y + 0 \times t_z + 0 \times 1 \\
+p_{14} &= s_x t_x
+\end{aligned}$$
 
 Aha!  The translation amount is multiplied by the scale factor.
 Could it be that our composite matrix represents the
 "translate first, then scale" transformation used in example 4?
 Yes.  Here's what you get if you work through all the terms:
 
-> $\begin{bmatrix}
-  s_x & 0   & 0   & s_x t_x \\\\\\\\
-  0   & s_y & 0   & s_y t_y \\\\\\\\
-  0   & 0   & s_z & s_z t_z \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+s_x & 0   & 0   & s_x t_x \\
+0   & s_y & 0   & s_y t_y \\
+0   & 0   & s_z & s_z t_z \\
+0   & 0   & 0   & 1
+\end{bmatrix}$$
 
 So, to get the "translate first, then scale" composite
 transformation, you multiply the scaling matrix times the
 translation matrix, as shown above.  What if you were to multiply
 the translation matrix times the scaling matrix, as shown here?
 
-> $\begin{bmatrix}
-  1 & 0 & 0 & t_x \\\\\\\\
-  0 & 1 & 0 & t_y \\\\\\\\
-  0 & 0 & 1 & t_z \\\\\\\\
-  0 & 0 & 0 & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  s_x & 0   & 0   & 0 \\\\\\\\
-  0   & s_y & 0   & 0 \\\\\\\\
-  0   & 0   & s_z & 0 \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+s_x & 0   & 0   & 0 \\
+0   & s_y & 0   & 0 \\
+0   & 0   & s_z & 0 \\
+0   & 0   & 0   & 1
+\end{bmatrix}$$
 
 What will we get for the product's first scaling term, $p_{11}$?
 What about the first translation term, $p_{14}$?
 
-> $p_{11} = 1 \times s_x + 0 \times 0 + 0 \times 0 + 0 \times 0$  
-  $p_{11} = s_x$
+$$\begin{aligned}
+p_{11} &= 1 \times s_x + 0 \times 0 + 0 \times 0 + 0 \times 0 \\
+p_{11} &= s_x
+\end{aligned}$$
 
-> $p_{14} = 1 \times 0 + 0 \times 0 + 0 \times 0 + t_x \times 1$  
-  $p_{14} = t_x$
+$$\begin{aligned}
+p_{14} &= 1 \times 0 + 0 \times 0 + 0 \times 0 + t_x \times 1 \\
+p_{14} &= t_x
+\end{aligned}$$
 
 This is just what we'd expect, if the product represents the
 "scale first, then translate" transformation used in example 3.
 And it turns out that it does:
 
-> $\begin{bmatrix}
-  s_x & 0   & 0   & t_x \\\\\\\\
-  0   & s_y & 0   & t_y \\\\\\\\
-  0   & 0   & s_z & t_z \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+s_x & 0   & 0   & t_x \\
+0   & s_y & 0   & t_y \\
+0   & 0   & s_z & t_z \\
+0   & 0   & 0   & 1
+\end{bmatrix}$$
 
 These examples show that we can create matrices representing
 composite transformations by multiplying matrices representing
@@ -377,48 +398,50 @@ also show that matrix multiplication is *not* commutative; that
 is, for matrices $A$ and $B$ (with dimensions such that
 multiplication is possible), $AB \ne BA$.
 
-@.  *Examples 3 and 4, in the previous lesson, show visually that
-    the order of
-    transformations is significant, but you can work it out by
-    hand to see the difference more clearly.*
+Exercise #: *The third and fourth examples in the previous lesson,
+"Squares in Different Places" and "Squares in Different Different
+Places,"
+show visually that the order of
+transformations is significant, but you can work it out by
+hand to see the difference more clearly.*
 
 -   *Pick one of the vertices of the square.  Find the
     $x$, $y$ and $z$ values for that vertex defined in the
     JavaScript part of the program.*
 -   *Work through (on paper and / or with a calculator) the
     transformations
-    applied to that vertex in the vertex shader from example
-    3 (Squares in Different Places), first for the orange
+    applied to that vertex in the vertex shader from the third
+    example (Squares in Different Places), first for the orange
     square and then for the blue.*
 -   *Then work through the transformations applied to that
-    vertex in the vertex shader from example 4 (Squares in
+    vertex in the vertex shader from the fourth example (Squares in
     Different Different Places).*
 
 *You should see that the $x$ values for the vertex you chose
 are indeed different depending on which version of the vertex
 shader is used.*
 
-@.  *Show that the following is true...*
+Exercise #: *Show that the following is true...*
 
-> $\begin{bmatrix}
-  s_x & 0   & 0   & 0 \\\\\\\\
-  0   & s_y & 0   & 0 \\\\\\\\
-  0   & 0   & s_z & 0 \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  1 & 0 & 0 & t_x \\\\\\\\
-  0 & 1 & 0 & t_y \\\\\\\\
-  0 & 0 & 1 & t_z \\\\\\\\
-  0 & 0 & 0 & 1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  s_x & 0   & 0   & s_x t_x \\\\\\\\
-  0   & s_y & 0   & s_y t_y \\\\\\\\
-  0   & 0   & s_z & s_z t_z \\\\\\\\
-  0   & 0   & 0   & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+s_x & 0   & 0   & 0 \\
+0   & s_y & 0   & 0 \\
+0   & 0   & s_z & 0 \\
+0   & 0   & 0   & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+s_x & 0   & 0   & s_x t_x \\
+0   & s_y & 0   & s_y t_y \\
+0   & 0   & s_z & s_z t_z \\
+0   & 0   & 0   & 1
+\end{bmatrix}$$
 
 *...by working through each term in the product matrix.  (Terms
 $p_{11}$, $p_{12}$ and $p_{14}$ were done for you in the
@@ -430,28 +453,28 @@ is in the "how much to scale x" position.  See how many of the
 terms you can describe in this way, based on what you've learned
 so far.  (You should be able to describe at least six.)*
 
-@.  *Repeat exercise 1, but use matrices to represent the
-    transformations...*
+Exercise #: *Repeat exercise 5.1, but use matrices to represent the
+transformations...*
 
 -   *Again, pick a vertex (but not the same one you picked for
     exercise 1).  Find its $x$, $y$ and $z$ values in the
     JavaScript part of the program.*
 -   *Write the transformations you see in the vertex shader code
-    for example 3 (Squares in Different Places) as 4x4 matrices.*
+    for the third example (Squares in Different Places) as 4x4 matrices.*
 -   *Work through the matrix multiplications
     required to get from the original vertex's $x$, $y$ and $z$
     to the values eventually assigned to `gl_Position` in the
     vertex shader.  Do this for the orange square's `scaleFactor`
     and `xTranslation` values, and then for the blue square's
     `scaleFactor` and `xTranslation` values.*
--   *Repeat the process for the vertex shader code for example
-    4 (Squares in Different Different Places).*
+-   *Repeat the process for the vertex shader code for the fourth
+    example (Squares in Different Different Places).*
 
 *Again, you should see that the $x$ values for the vertex you
 chose are indeed different depending on which version of the
 vertex shader you used.*
 
-## Example 1: Example 3 (from previous lesson) with Matrices
+## Squares in Different Places...with Matrices
 
 In the previous section, vertices were represented by matrices
 with a single column, and *post-multiplication* was used to
@@ -459,19 +482,19 @@ apply a transformation represented by a matrix.  Alternatively,
 you can use *pre-multiplication* if vertices are represented
 by matrices with a single row:
 
-> $\begin{bmatrix}
-  x' & y' & z' & 1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  x & y & z & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  1   & 0   & 0   & 0 \\\\\\\\
-  0   & 1   & 0   & 0 \\\\\\\\
-  0   & 0   & 1   & 0 \\\\\\\\
-  t_x & t_y & t_z & 1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' & y' & z' & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+x & y & z & 1
+\end{bmatrix}
+\begin{bmatrix}
+1   & 0   & 0   & 0 \\
+0   & 1   & 0   & 0 \\
+0   & 0   & 1   & 0 \\
+t_x & t_y & t_z & 1
+\end{bmatrix}$$
 
 For pre-multiplication, what's shown here, the vertex comes first,
 in contrast to examples of post-multiplcation in the previous
@@ -488,12 +511,12 @@ Given an array representing a matrix, there are two ways to
 interpret it:  *row-major order* and *column-major order*.  Here's a
 matrix:
 
-> $\begin{bmatrix}
-   1 & 0 & 0 & t_x \\\\\\\\
-   0 & 1 & 0 & t_y \\\\\\\\
-   0 & 0 & 1 & t_z \\\\\\\\
-   0 & 0 & 0 & 1
-   \end{bmatrix}$
+$$\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}$$
 
 Here's how you would code it as an array, if the language used
 row-major order:
@@ -658,12 +681,12 @@ gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 ~~~
 
 As you might guess from the title of this section, the image
-generated by this code should match example 3 from the previous
-lesson.
+generated by this code would match what was generated by
+the previous lesson's "Squares in Different Places" example.
 
-@.  *Implement the `multiply`, `scale`,
-    and `translate` functions listed above so that
-    you have a working program for example 1 (from this lesson).*
+Exercise #: *Implement the `multiply`, `scale`,
+and `translate` functions listed above so that
+you have a working program for the example above.*
 
 *To help you test your functions, here's a function that
 prints a 16-element JavaScript array in the browser console.*
@@ -685,7 +708,7 @@ printMatrix = function (m, d) {
 };
 ~~~
 
-@.  *Rewrite the code for example 1 (from this lesson) so that...*
+Exercise #: *Rewrite the code from the previous exercise so that...*
 
 -   *In the JavaScript part of the program, transformation
     matrix arrays look like they've been transposed.*
@@ -696,9 +719,9 @@ printMatrix = function (m, d) {
 *The image produced by your program should match what's
 produced by your solution to the previous exercise.*
 
-@.  *Based on what you've learned so far, write
-    a WebGL program that generates an image like the side view of
-    a Rubik's Cube.*
+Exercise #: *Based on what you've learned so far, write
+a WebGL program that generates an image like the side view of
+a Rubik's Cube.*
 
 -   *Your program should define vertex data for the four
     corners of just one square, like the examples above.*
@@ -710,10 +733,11 @@ produced by your solution to the previous exercise.*
 
 *Figure 5.1 shows a possible solution.*
 
-<figure style="width:300px">
-<canvas id="canvas_5_1" width=300 height=300></canvas>
-<figcaption><strong>Figure 5.1:</strong> Rubik's Cube Side View</figcaption>
-</figure>
-<script src="tf/5_1/side.js"></script>
+<figure markdown="1">
+<!-- <canvas id="canvas_5_1" width="400" height="300"></canvas> -->
 
-<!-- ![__Figure 5.1:__ Rubik's Cube Side View](tf/5_1/screenshot.png) -->
+![Rubik's Cube Side View](tf/5_1/screenshot.png)
+
+<figcaption>Figure #: Rubik's Cube Side View</figcaption>
+</figure>
+<!-- <script src="tf/5_1/side.js"></script> -->
