@@ -12,12 +12,17 @@ Lessons prepared for CIS 487 Interactive 3D Graphics, January
 
 {% assign sorted_pages = site.pages | sort: 'lesson' %}
 
-<p>
+<div>
 {% for page in sorted_pages %}
 {% if page.lesson != null %}
-<strong>Lesson {{ page.lesson }}:</strong>
-<a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
-<p class="summary">{{ page.summary }}</p>
+
+<div class="toc-link">
+  <strong>Lesson {{ page.lesson }}:</strong>
+  <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+</div>
+
+<div class="summary">{{ page.summary }}</div>
+
 {% endif %}
 {% endfor %}
-</p>
+</div>

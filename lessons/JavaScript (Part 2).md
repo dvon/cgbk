@@ -3,6 +3,11 @@ layout: default
 no_math: true
 title: JavaScript (Part 2)
 lesson: 2
+summary:
+    Continuing on from the previous lesson, this lesson
+    shows how to create objects with members that act like
+    public or private, instance or class members would in a
+    typical object-oriented programming language.
 ---
 
 # JavaScript (Part 2)
@@ -10,7 +15,8 @@ lesson: 2
 Continuing on from the previous lesson, this lesson shows how
 to create objects with members (i.e., fields and methods)
 that behave the way public and private instance members, and
-public and private static members, would in a language like Java.
+public and private class (i.e., static) members, would in a
+language like Java.
 
 ## Using Functions to Create Objects with Private Members
 
@@ -140,10 +146,10 @@ fileNames = ["hello.txt", "salut.txt", "hola.txt"];
 readFiles(fileNames, printResponses);
 ~~~
 
-*Hint:  You can use an immediate function any time you need to
-limit the scope of a variable.  My solution for this exercise
-uses an immediate function within a loop, an idea illustrated
-by the example below.*
+*Hint:  One approach to solving this problem would be to put an
+immediate function inside a loop, in order to limit the scope of
+variables declared within that function to just the code within
+the loop, as shown here.*
 
 ~~~javascript
 j = 1;
@@ -157,6 +163,33 @@ for (i = 0; i < 5; i++) {
 
 console.log(j);  // prints "1"
 ~~~
+
+*Hint (continued): Unfortunately JSList doesn't allow you to
+create a function
+inside a loop; it would usually be a wasteful mistake.  A way to
+work around this would be to create a
+function that creates and returns a new function, and to call the
+function-creating function from within a loop.  The example
+below illustrates this.*
+
+~~~javascript
+j = 1;
+
+createJPrinter = function () {
+    return function () {
+        var j = 2;
+        console.log(j);
+    };
+};
+
+for (i = 0; i < 5; i++) {
+    jPrinter = createJPrinter();
+    jPrinter();  // prints "2" (5 times)
+}
+
+console.log(j);  // prints "1"
+~~~
+
 
 ## Public, Private, Static
 
@@ -354,7 +387,14 @@ PigPlayer = function (holdAmount) {
 
 What about static members?  In the following example, `numDice`
 would act like a private static field.  It's created just once,
-when the immediate function wrapping `PigPlayer` runs...  TODO
+when the immediate function wrapping `PigPlayer` runs.  (This
+is in contrast to `pb` and `pv` above, which are created every
+time the constructor `PigPlayer` runs.)  Since it's not returned
+there won't be a way to access it directly from outside a
+`PigPlayer` object, and yet if it's accessed within a function
+that's a member of the PigPlayer object (e.g., `pv.rollDice`)
+a reference to it will be maintained as part of the state of
+the object.  That is, it will act like a private static field.
 
 ~~~javascript
 (function () {
@@ -473,19 +513,22 @@ p = new PigPlayer(20);
 p.maxHold = 40;
 ~~~
 
-Rather than changing `PigPlayer.maxHold`, this statement would add
-`maxHold` to `p` as a public instance field and initialize it to
+Rather than changing the static field `PigPlayer.maxHold`, this
+statement would add `maxHold` to `p` as a new public *instance*
+field and initialize it to
 40.  You wouldn't get any error message, the code just wouldn't
 do what you intend.  Because of this you might want to avoid
 public instance fields.  Instead, you could just use a variable
 declared in such a way that its scope contains all
 instances.
 
-*Exercise #: Why is it that `setNumDice` isn't defined at the beginning
+*Exercise #: Why is it that `setNumDice` isn't defined at the
+beginning
 with private static members?  Or what if `setNumDice` were
 defined inside `PigPlayer`?  What difference would that make?*
 
-_Exercise #: Translate the following Java class into a JavaScript function,
+_Exercise #: Translate the following Java class into a JavaScript
+function,
 following the pattern of the final version of `PigPlayer`
 above:  use `ps` for any private static members, `pb` for
 any public instance members, and `pv` for any private instance
@@ -558,6 +601,6 @@ public class Sprite {
 }
 ~~~
     
-[^1]: In case you are worried about the possibility of a race condition, if for example you had multiple callback functions trying to modify a shared variable at the same time...you don't need to worry about that.  In JavaScript a function runs as an *atomic* piece of code, i.e., its execution won't be interleaved with that of another function. For more details: <https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop>
+[^1]: In case you are worried about the possibility of a race condition, if for example you had multiple callback functions trying to modify a shared variable at the same time...you don't need to worry about that.  In JavaScript a function runs as an *atomic* piece of code, i.e., its execution won't be interleaved with that of another function. For more details: <https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop>.
 
 [^2]: A different way to simulate public static members would be to use the `prototype` member automatically created for function objects and assigned to `this` when the function is invoked as a constructor (i.e., with `new`).  I've chosen not to do it this way, and to avoid a general discussion of how `prototype` works in Javascript, in order to keep this lesson from getting too long.
