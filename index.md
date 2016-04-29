@@ -1,7 +1,6 @@
 ---
 layout: default
 no_code: true
-no_math: true
 no_exercises: true
 ---
 
@@ -20,8 +19,7 @@ Lessons prepared for CIS 487 Interactive 3D Graphics, January
   <strong>Lesson {{ page.lesson }}:</strong>
   <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
 </div>
-
-<div class="summary">{{ page.summary }}</div>
+<p class="summary" markdown="1">{{ page.summary }}</p>
 
 {% endif %}
 {% endfor %}

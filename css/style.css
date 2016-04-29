@@ -63,7 +63,7 @@ pre code {
 }
 
 .summary {
-  margin: 0px 0px 15px 35px;
+  margin: 5px 0px 15px 35px;
 }
 
 figure {
@@ -76,6 +76,10 @@ figcaption {
 
 figure img, canvas {
   border: 1px solid rgb(230, 220, 190);
+}
+
+.no-border img {
+  border: none;
 }
 
 .footnote {

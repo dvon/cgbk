@@ -4,10 +4,10 @@ no_math: true
 title: JavaScript (Part 2)
 lesson: 2
 summary:
-    Continuing on from the previous lesson, this lesson
+    "Continuing on from the previous lesson, this lesson
     shows how to create objects with members that act like
     public or private, instance or class members would in a
-    typical object-oriented programming language.
+    typical object-oriented programming language."
 ---
 
 # JavaScript (Part 2)

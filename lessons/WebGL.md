@@ -2,6 +2,10 @@
 layout: default
 title: WebGL 
 lesson: 3
+summary:
+    "In this lesson you'll learn the basic structure of a WebGL
+    program:  HTML + JavaScript + vertex and fragment shaders
+    written in the OpenGL shading language."
 ---
 
 # WebGL

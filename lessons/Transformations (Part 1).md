@@ -2,6 +2,10 @@
 layout: default
 title: Transformations (Part 1)
 lesson: 4
+summary:
+    "This lesson introduces *transformations*---mathematical
+    operations applied to every vertex in the scene---to get from
+    one coordinate system to another."
 ---
 
 # Transformations (Part 1)

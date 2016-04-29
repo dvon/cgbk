@@ -2,6 +2,11 @@
 layout: default
 title: Transformations (Part 2)
 lesson: 5
+summary:
+    "In this lesson, matrix multiplication will be used (first
+    mathematically, then in JavaScript code) to implement the
+    scaling and translation transformations introduced in the
+    previous lesson."
 ---
 
 # Transformations (Part 2)
@@ -10,7 +15,8 @@ This lesson will show you how matrix multiplication can be used
 to implement the scaling and translation transformations
 introduced in the previous lesson.  We'll see also that it's
 possible to represent the cumulative effect of a series of
-transformations with just one 4x4 matrix.  Then we'll redo the
+transformations with just one $4 \times 4$ matrix.
+Then we'll redo the
 previous lesson's third example, using matrix multiplication in
 the vertex shader code.
 
@@ -60,8 +66,8 @@ z
 \end{bmatrix}$$
 
 What does this mean? Well, here's how multiplication would be
-defined for a general 3x3 matrix times a 3x1 matrix representing a
-vertex with $x$, $y$ and $z$ coordinates:
+defined for a general $3 \times 3$ matrix times a $3 \times 1$
+matrix representing a vertex with $x$, $y$ and $z$ coordinates:
 
 $$\begin{bmatrix}
 x' \\
@@ -115,15 +121,15 @@ etc.?  They give you ways of making, for example, $x'$ depend on
 $y$ or $z$.  We don't need them for scaling, but we'll use them
 later for rotation transformations.
 
-So we can use a 3x3 matrix to represent a general 3D scaling
+So we can use a $3 \times 3$ matrix to represent a general 3D scaling
 transformation.  What about translation?  In the examples above,
 we added the same value to the $x$ coordinate of every vertex.
-But there's no term in the 3x3 matrix we can use to do this.
+But there's no term in the $3 \times 3$ matrix we can use to do this.
 We can make $x'$ depend on $x$, $y$ or $z$, but we can't just add
 the same thing to every $x$, regardless of the $y$, $z$ or
-original $x$ values.  A 3x3 matrix won't work.
+original $x$ values.  A $3 \times 3$ matrix won't work.
 
-But a 4x4 will:
+But a $4 \times 4$ will:
 
 $$\begin{bmatrix}
 x' \\
@@ -290,7 +296,7 @@ In general, the product matrix term $p_{ij}$ is equal to the
 sum produced by multiplying the row$_i$ terms from the first
 matrix by the column$_j$ terms from the second, and then adding
 the resulting values together.  This is true for any size
-square matrices, including the 4x4 transformation matrices
+square matrices, including the $4 \times 4$ transformation matrices
 we're interested in.  Let's work through an example
 using the scaling matrix as the first matrix and the translation
 matrix as the second:
@@ -460,7 +466,8 @@ transformations...*
     exercise 1).  Find its $x$, $y$ and $z$ values in the
     JavaScript part of the program.*
 -   *Write the transformations you see in the vertex shader code
-    for the third example (Squares in Different Places) as 4x4 matrices.*
+    for the third example (Squares in Different Places) as
+    $4 \times 4$ matrices.*
 -   *Work through the matrix multiplications
     required to get from the original vertex's $x$, $y$ and $z$
     to the values eventually assigned to `gl_Position` in the
@@ -573,13 +580,14 @@ void main(void) {
 }
 ~~~
 
-The `uniform` variable `transform` is a 4x4 transformation matrix
+The `uniform` variable `transform` is a $4 \times 4$
+transformation matrix
 given in row-major order.  As explained above, it will be
 interpreted as the column-major transpose of the transformation
 matrix we're interested in, so when calculating `gl_Position`
 we pre-multiply; that is, we put the vertex first.  Note that
 the multiplication operation we need---multiply a 4-value vector
-and a 4x4 matrix---is built in to GLSL.  Also, the vector is
+and a $4 \times 4$ matrix---is built in to GLSL.  Also, the vector is
 automatically treated as a single row or as a single column
 depending on which is needed to make the multiplication valid.
 
@@ -589,7 +597,7 @@ implementation of these functions is one of the exercises at the
 end of this lesson.)
 
 ~~~javascript
-// Returns an array representing a 4x4 identity matrix.
+// Returns an array representing a $4 \times 4$ identity matrix.
 identityMatrix = function () {
     return [ 1, 0, 0, 0,
              0, 1, 0, 0,
