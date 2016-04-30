@@ -108,30 +108,30 @@ as a matrix multiplication, with the vertices given in
 homogeneous coordinates:
 
 $$\begin{bmatrix}
-  x' \\
-  y' \\
-  z' \\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  x \cos \theta - y \sin \theta \\
-  x \sin \theta + y \cos \theta \\
-  z \\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  \cos \theta & - \sin \theta & 0 & 0 \\
-  \sin \theta &   \cos \theta & 0 & 0 \\
-  0 & 0 & 1 & 0 \\
-  0 & 0 & 0 & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\
-  y \\
-  z \\
-  1
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+x \cos \theta - y \sin \theta \\
+x \sin \theta + y \cos \theta \\
+z \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos \theta & - \sin \theta & 0 & 0 \\
+\sin \theta &   \cos \theta & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
 \end{bmatrix}$$
 
 Notice that this transformation makes use of two terms that were
@@ -459,7 +459,7 @@ tf.translate(0.5, 0.5, 0.0);
 
 Now that we know the "handedness" of our coordinate system
 (it's right-handed), we can
-picture it in different orientations, as shown in figure 6.  What's
+picture it in different orientations, as shown in figure 6.6.  What's
 the point of this?  It shows that...
 
 -  An $x$ axis rotation is like a $z$ axis rotation; just
@@ -467,7 +467,10 @@ the point of this?  It shows that...
 -  A $y$ axis rotation is like a $z$ axis rotation; just
    substitute $z$ for $x$, $x$ for $y$, and $y$ for $z$.
 
-![$z$, $x$ and $y$ Rotations](rotations.png)
+<figure markdown="1" class="no-border">
+![$z$, $x$ and $y$ Rotations](tf/rotations.png)
+<figcaption>Figure #: $z$, $x$ and $y$ Rotations</figcaption>
+</figure>
 
 <!--
 \begin{tikzpicture}[scale=0.2]
@@ -510,87 +513,93 @@ the point of this?  It shows that...
 Here are our $z$ axis equations.  ($z'$ = $z$ was excluded before,
 until we moved to the matrix representation.)
 
-> $x' = x \cos \theta - y \sin \theta$  
-  $y' = x \sin \theta + y \cos \theta$  
-  $z' = z$
+$$\begin{aligned}
+x' &= x \cos \theta - y \sin \theta \\
+y' &= x \sin \theta + y \cos \theta \\
+z' &= z
+\end{aligned}$$
 
 Substituting $y$ for $x$, $z$ for $y$, and $x$ for $z$, we get
 equations for an $x$ axis rotation:
 
-> $y' = y \cos \theta - z \sin \theta$  
-  $z' = y \sin \theta + z \cos \theta$  
-  $x' = x$
+$$\begin{aligned}
+y' &= y \cos \theta - z \sin \theta \\
+z' &= y \sin \theta + z \cos \theta \\
+x' &= x
+\end{aligned}$$
 
 Here's the (equivalent) $x$ axis rotation written as a matrix
 multiplication, with the vertices given in homogeneous coordinates.
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \cos \theta - z \sin \theta \\\\\\\\
-  y \sin \theta + z \cos \theta \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  1 & 0 & 0 & 0 \\\\\\\\
-  0 & \cos \theta & - \sin \theta & 0 \\\\\\\\
-  0 & \sin \theta & \cos \theta & 0 \\\\\\\\
-  0 & 0 & 0 & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
-  1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+x \\
+y \cos \theta - z \sin \theta \\
+y \sin \theta + z \cos \theta \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos \theta & - \sin \theta & 0 \\
+0 & \sin \theta & \cos \theta & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}$$
 
 Or, if we go back to the $z$ axis rotation equations and substitute
 $z$ for $x$, $x$ for $y$, and $y$ for $z$, we get equations for a
 $y$ axis rotation:
 
-> $z' = z \cos \theta - x \sin \theta$  
-  $x' = z \sin \theta + x \cos \theta$  
-  $y' = y$
+$$\begin{aligned}
+z' &= z \cos \theta - x \sin \theta \\
+x' &= z \sin \theta + x \cos \theta \\
+y' &= y
+\end{aligned}$$
 
 Here's the $y$ axis rotation written as a matrix multiplication:
 
-> $\begin{bmatrix}
-  x' \\\\\\\\
-  y' \\\\\\\\
-  z' \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  z \sin \theta + x \cos \theta \\\\\\\\
-  y \\\\\\\\
-  z \cos \theta - x \sin \theta \\\\\\\\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  \cos \theta & 0 & \sin \theta & 0 \\\\\\\\
-  0 & 1 & 0 & 0 \\\\\\\\
-  - \sin \theta & 0 & \cos \theta & 0 \\\\\\\\
-  0 & 0 & 0 & 1
-  \end{bmatrix}
-  \begin{bmatrix}
-  x \\\\\\\\
-  y \\\\\\\\
-  z \\\\\\\\
-  1
-  \end{bmatrix}$
+$$\begin{bmatrix}
+x' \\
+y' \\
+z' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+z \sin \theta + x \cos \theta \\
+y \\
+z \cos \theta - x \sin \theta \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos \theta & 0 & \sin \theta & 0 \\
+0 & 1 & 0 & 0 \\
+- \sin \theta & 0 & \cos \theta & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}$$
 
 Once you've added `rotateX` and `rotateY` functions to the
-library file and completed the code below (exercise 1), you should
-get what you see in figure 7.
+library file and completed the code below (exercise 6.1), you
+should get what you see in figure 6.7.
 
 ~~~javascript
 /*jslint white: true */
@@ -650,18 +659,23 @@ get what you see in figure 7.
 }(this));
 ~~~
 
-![A Purple Cube](example_04/screenshot.png)
+<figure markdown="1">
+![A Purple Cube](tf/6_4/screenshot.png)
+<figcaption>Figure #: A Purple Cube</figcaption>
+</figure>
 
-The image shown in figure 7 is your very first 3D thing!  (Once
-you've completed exercise 1.)  But it looks a little strange,
+The image shown in figure 6.7 is your very first 3D thing!  (Once
+you've completed exercise 6.1.)  But it looks a little strange,
 almost as if the back of the cube is slightly bigger than the
 front.  It isn't actually bigger, it's the same size.  But we're
 used to farther away things looking smaller than closer things,
 so when they're the same size the farther thing looks like it must
 be bigger.  We'll see in the next lesson how to fix this.
 
-@.  *Add `rotateX` and `rotateY` functions to the library file,
-    following the pattern of `rotateZ` above.  Then complete the
-    code for example 4 so that you see the purple cube.  Because
-    you can't see all six sides at once, check your program by
-    commenting out some, then commenting out others, etc.*
+*Exercise #: Add `rotateX` and `rotateY` functions to the
+library file,
+following the pattern of `rotateZ` above.  Then complete the
+code for the fourth example so that you see the purple cube.
+Because
+you can't see all six sides at once, check your program by
+commenting out some, then commenting out others, etc.*
